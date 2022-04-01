@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"qushao.icu","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="学习Java核心技术·卷Ⅰ时记录的笔记，主要是一些除基础知识外容易疏忽的东西或者需要注意的细节，大部分内容来自该书原文，小部分内容结合自己的理解。（根据自己的学习进度持续更新）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java核心技术·卷Ⅰ读书笔记">
+<meta property="og:url" content="http://qushao.icu/2021/12/07/Java%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="屈少">
+<meta property="og:description" content="学习Java核心技术·卷Ⅰ时记录的笔记，主要是一些除基础知识外容易疏忽的东西或者需要注意的细节，大部分内容来自该书原文，小部分内容结合自己的理解。（根据自己的学习进度持续更新）">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://qushao.icu/images/java_top_img.png">
+<meta property="og:image" content="http://qushao.icu/images/java_type.png">
+<meta property="og:image" content="http://qushao.icu/images/java_operator.png">
+<meta property="og:image" content="http://qushao.icu/images/java_collection.png">
+<meta property="article:published_time" content="2021-12-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-01T14:24:05.755Z">
+<meta property="article:author" content="屈少">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="读书笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qushao.icu/images/java_top_img.png">
+
+
+<link rel="canonical" href="http://qushao.icu/2021/12/07/Java%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://qushao.icu/2021/12/07/Java%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/","path":"2021/12/07/Java读书笔记/","title":"Java核心技术·卷Ⅰ读书笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java核心技术·卷Ⅰ读书笔记 | 屈少</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">屈少</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E5%8D%B7%E2%85%B0%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">Java核心技术·卷Ⅰ读书笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.0.1.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">1.0.2.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.0.3.</span> <span class="nav-text">运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.0.4.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">1.0.5.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%B1%BB"><span class="nav-number">1.0.6.</span> <span class="nav-text">对象与类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF"><span class="nav-number">1.0.7.</span> <span class="nav-text">继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E5%86%85%E9%83%A8%E7%B1%BB"><span class="nav-number">1.0.8.</span> <span class="nav-text">接口、内部类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%96%AD%E8%A8%80%E5%92%8C%E6%97%A5%E5%BF%97"><span class="nav-number">1.0.9.</span> <span class="nav-text">异常、断言和日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.0.10.</span> <span class="nav-text">泛型程序设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E5%90%88"><span class="nav-number">1.0.11.</span> <span class="nav-text">集合</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="屈少"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">屈少</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qu-shao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qu-shao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qudeying@gmail.com" title="E-Mail → mailto:qudeying@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/6083512326" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6083512326" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/8797901" title="Bilibili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;8797901" rel="noopener" target="_blank"><i class="fab fa-television fa-fw"></i>Bilibili</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/qu-shao" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://qushao.icu/2021/12/07/Java%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="屈少">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="屈少">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java核心技术·卷Ⅰ读书笔记 | 屈少">
+      <meta itemprop="description" content="学习Java核心技术·卷Ⅰ时记录的笔记，主要是一些除基础知识外容易疏忽的东西或者需要注意的细节，大部分内容来自该书原文，小部分内容结合自己的理解。（根据自己的学习进度持续更新）">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java核心技术·卷Ⅰ读书笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-12-07 00:00:00" itemprop="dateCreated datePublished" datetime="2021-12-07T00:00:00+08:00">2021-12-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-04-01 22:24:05" itemprop="dateModified" datetime="2022-04-01T22:24:05+08:00">2022-04-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">学习Java核心技术·卷Ⅰ时记录的笔记，主要是一些除基础知识外容易疏忽的东西或者需要注意的细节，大部分内容来自该书原文，小部分内容结合自己的理解。（根据自己的学习进度持续更新）</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="java核心技术卷ⅰ读书笔记">Java核心技术·卷Ⅰ读书笔记</h2>
+<p><img data-src="/images/java_top_img.png" /></p>
+<h4 id="数据类型">数据类型</h4>
+<p>​
+Java中一共8种基本类型：int、short、long、byte、float、double、char、boolean。</p>
+<p>​
+Java中没有任何无符号（unsigned）形式的int、short、long或者byte类型。</p>
+<p>​
+不同于其他语言，Java整型的范围与运行Java代码的机器无关，而例如C/C++中，int在16位机器上占2字节，在32位机器上占4字节，在64位机器上占8字节。</p>
+<p>​
+浮点数值不适用于无法接受舍入误差的金融计算中。舍入误差产生的原因：根据IEEE
+754标准，单精度float类型使用32比特存储，其中1位表示符号，8位表示指数，23位表示尾数；双精度double类型使用64比特存储，1位符号位，11位指数位，52位尾数位。</p>
+<p>​
+Float精度为6-7位，Double精度为15位，所以说Int类型的数据转向Float会损失精度，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> intData1=<span class="number">123</span>;</span><br><span class="line"><span class="type">int</span> intData2=<span class="number">123456789</span>;</span><br><span class="line">System.out.println((<span class="type">float</span>)intData1);</span><br><span class="line">System.out.println((<span class="type">float</span>)intData2);</span><br></pre></td></tr></table></figure>
+<p>结果为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">123.0</span></span><br><span class="line"><span class="number">1.23456792E8</span>  <span class="comment">//此处已经损失精度</span></span><br></pre></td></tr></table></figure>
+<p>​ 整型值和布尔值之间不能相互转换。</p>
+<p>​
+Java中父类强制转换成子类的原则：父类型的引用指向的是哪个子类的实例，就能转换成哪个子类的引用。父类转子类的前提是：此父类对象为子类对象的引用。</p>
+<p>​ 从Java 7开始，加上前缀 0b 就可以写成二进制数。例如
+0b1010就是十进制数10，另外，同样是从Java
+7开始，还可以在数字字面量加下划线，如用1_000_000(或
+0b1111_0100_0010_0000)表示一百万。这些下划线只是为了让人更容易阅读，Java编译器会去除这些下划线。</p>
+<p><img data-src="/images/java_type.png" /></p>
+<h4 id="变量">变量</h4>
+<p>​ 声明一个变量后，必须用赋值语句对变量进行显式初始化。</p>
+<p>​ 建议变量的声明尽可能地靠近变量第一次使用的地方。</p>
+<p>​ 在Java中，利用关键字final指示常量，常量名习惯上使用全大写。</p>
+<p>​
+final修饰对象引用相当于一个常量指针，在内存中的地址不能改变，但是可以修改引用指向内存地址的具体内容。</p>
+<p>​ 如果希望一个常量在一个类的多个方法中都可以使用，可以将常量用 static
+final 修饰；类常量的定义位于main方法外。</p>
+<p>​ const是Java的保留关键字，但是还没有使用。</p>
+<p>​
+Java中的所有参数都通过值传递。当参数是原始数据类型时，实际参数的值将复制到参数中，对方法主体中的参数值进行的任何更改只会更改形式参数的副本，而不会更改实际参数的值；而当参数是引用类型时，存储在实际参数中的引用被复制到形式参数，此时实际参数和形式参数都指向内存中的相同对象，在方法主体中对引用变量做出的任何操作将会改变实参指向的对象。</p>
+<h4 id="运算符">运算符</h4>
+<p>​ 参与 /
+（除法）运算的两个操作数都是整数时，表示整数除法，否则表示浮点数除法。</p>
+<p>​ 只有整数才有 % （求余）运算。</p>
+<p>​
+低精度向高精度转换不存在精度丢失，称为隐式类型转换；反之，高精度向低精度转换可能存在精度丢失，称为显示类型转换，或者强制类型转换。</p>
+<p>​ 逻辑运算符 &amp;&amp; 和 || 按照"短路"方式求值，且 &amp;&amp;
+的优先级高于 || ；但是 &amp; 和 |
+不遵循"短路"的原则，也可以达到逻辑与和或的目的。</p>
+<p>​
+逻辑位移是移动数字的所有物理比特位；算数位移是对数字除了符号位以外的比特位进行位移，符号位保持不变。</p>
+<p>​ 在Java中，使用 &gt;&gt;&gt; 表示逻辑位移，使用 &gt;&gt;
+表示算数位移； &gt;&gt; (算术右移)将用符号位填充高位， &gt;&gt;&gt;
+会用0填充最高位，不存在 &lt;&lt;&lt; 的运算。</p>
+<p><img data-src="/images/java_operator.png" /></p>
+<h4 id="字符串">字符串</h4>
+<p>​ 静态方法 join() 可以将字符串以一个分界符连接起来。</p>
+<p>​
+Java中String类型是不可变字符串，字符串不可变的优点在于编译器可以让字符串共享。</p>
+<p>​ ==
+运算符用于判断字符串对象时判断的是对象的引用是否相同，即引用是否指向内存中同一个地址，如果需要判断字符串的内容是否一致，则需要调用方法
+equals() 。</p>
+<p>​
+如果需要以频繁地拼接字符串作为构建字符串的方式，则使用StringBuilder类（非线程安全，效率高）或者StringBuffer类（线程安全）更好。</p>
+<h4 id="数组">数组</h4>
+<p>​ 数组长度不要求是常量。</p>
+<p>​
+创建一个数字数组时，所有元素初始化为0；创建一个对象数组时，所有元素初始化为
+null ；创建一个 boolean 数组时，所有元素初始化为 false 。</p>
+<p>​ Arrays 类的 toString() 方法可以快递打印一个数组。</p>
+<p>​
+数组的拷贝默认是浅层拷贝，即复制的是数组对象的引用，前后两者指向同一片内存；若要深层拷贝，则需要调
+Arrays 类的 copyOf() 方法。</p>
+<h4 id="对象与类">对象与类</h4>
+<p>​ 对象的三个主要特性：行为；状态；标识。</p>
+<p>​ 类之间的关系：依赖；继承；聚合。</p>
+<p>​
+依赖是一种“uses-a”的关系，如果一个类的方法操作另一个类的对象，则说前者依赖于后者。应尽可能地减少依赖关系，如果类A不知道类B的存在，那么任何对类B的修改都不会引起类A的变化，即类之间的耦合度越小越好。</p>
+<p>​ 聚合是一种“has-a”的关系，即一个类的对象中包含另一个类的对象。</p>
+<p>​ 继承是一种“is-a”的关系，是一种用于表示特殊与一般的关系。</p>
+<p>​ 一个对象变量并没有实际包含一个对象，仅仅只是一个对象的引用。</p>
+<p>​ 局部变量不会自动地初始化为 null ，必须通过调用 new
+对其进行初始化或者将他们设置为 null 。</p>
+<p>​
+封装的优点：保证该类的内部修改不会影响到其他的代码；尽量提供独立的域访问器和域更改器，保证实例域值不受到外界的破坏，即不提倡直接以成员变量访问实例域值的方式。</p>
+<p>​
+如果构造器没有显式地给域赋初始值，那么会自动地被赋初始值，这也是域与局部变量的主要不同点，但是一般还是建议对域都进行初始化。</p>
+<p>​
+如果类中提供了至少一个构造器，但是没有提供无参数的构造器，则在构造对象时如果没有提供参数就会被视为不合法。</p>
+<p>​ 如果构造器的第一个语句形如 this(...)
+，这个构造器将调用同一个类的另一个构造器。采用这种方式使用 this
+关键字非常有用，这样对公共的构造器代码部分只编写一次即可。</p>
+<p>​
+在一个类的声明中，可以包含多个代码块。只要构造类的对象，这些块就会被执行。</p>
+<p>​ 一个类可以使用所属包中的所有类和其他包中的公有类。</p>
+<p>​
+类设计技巧：一定要保证数据私有；一定要对数据初始化；不要在类中使用过多的基本类型；不是所有的域都需要独立的域访问器和域更改器（比如创建时间等初始化后无需更改的数据）；将职责过多的类进行分解；类名和方法名要能够体现他们的职责；优先使用不可变的类（保证多线程安全）。</p>
+<h4 id="继承">继承</h4>
+<p>​
+在Java中，所有继承都是公有继承（不同于C++中存在私有继承和保护继承）。</p>
+<p>​
+在子类中可以增加域、增加方法、覆盖超类的方法，但是不能删除继承的任何域和方法。</p>
+<p>​ 子类想要访问超类的域一般要借助超类的域访问器，使用关键字 super
+。</p>
+<p>​ 我们可以通过super 实现对超类构造器的调用，使用 super
+调用构造器的语句必须是子类构造器的第一条语句。</p>
+<p>​
+如果子类的构造器没有显式地调用超类的构造器，则将自动地调用超类默认（没有参数）的构造器。如果超类没有不带参数的构造器，并且在子类的构造器中又没有显式地调用超类的其他构造器，则Java
+编译器将报告错误。</p>
+<p>​ 一个对象变量（例如，变量e
+）可以指示多种实际类型的现象被称为多态（polymorphism）；在运行时能够自动地选择调用哪个方法的现象称为动态绑定（dynamic
+binding）。</p>
+<p>​ Java不支持多继承。</p>
+<p>​
+程序中出现超类对象的任何地方都可以用子类对象置换，例如，可以将一个子类的对象赋值给超类变量，但是反之则是不成立的。</p>
+<p>​
+包含一个或者多个抽象方法的类必须被声明为抽象类；抽象类中依然可以包含具体数据和具体方法。</p>
+<p>​
+抽象类不能被实例化，但是可以创建抽象类的对象变量，它只能指向具体子类的对象。</p>
+<p>​ Java规定 equals()
+方法具有如下特性：自反性；对称性；传递性；一致性；对于任意非空引用x，<code>x.equals(null)</code>
+返回false。</p>
+<p>​
+ArrayList是一个采用类型参数的泛型类，可以实现动态数组；但是他不能直接使用[]访问数组元素，必须借助
+set() 和 get()
+方法。可以将一个类型化的数组列表传递给一个原始无参数ArrayList而不需要任何类型转换；也可以将一个原始无参数ArrayList赋值给一个类型化ArrayList（这样将会得到一个警告）。</p>
+<p>​
+包装器：Integer、Long、Float、Double、Short、Byte、Character、Void、Boolean，对象包装器是不可变的，一旦构造了包装器，就不允许更改包装在其中的值。</p>
+<p>​
+继承的设计技巧：将公共操作和域放在超类；使用继承实现“is-a”的关系；除非所有继承的方法都有意义，否则不要使用继承；在覆盖方法时，不要改变预期的行为；使用多态而非类型信息（即不要通过判断对象的类型来确定执行同一概念的不同行为，可以将该行为放置在超类或者接口中，通过多态性提供的动态分派机制执行相应的行为）；不要过多地使用反射。</p>
+<h4 id="接口内部类">接口、内部类</h4>
+<p>​
+接口决不能含有实例域，但却可以包含常量，可以实现一些简单的方法。</p>
+<p>​ Java中的类可以实现任意数量的接口。</p>
+<p>​ 实现接口必须实现其中所有的方法。</p>
+<p>​
+在接口中，所有的方法默认都是public的，但是在实现接口中，必须声明方法为public；接口中的域默认是
+public static final 的。</p>
+<p>​ 可以为接口方法提供一个默认实现，必须用 default
+修饰符标记；且默认方法可以调用任何其他方法。</p>
+<p>​
+为接口增加一个非默认方法不能保证“源代码兼容”，在之前的接口中添加非默认方法可能导致之前实现接口的类编译出错（因为没有实现新加入的方法）。</p>
+<p>​
+解决默认方法冲突：超类优先；接口冲突。如果一个类继承自一个超类并且实现了一个接口，且超类提供了一个和接口冲突的方法，此时接口的方法（无论是否存在默认方法都将失效，满足类优先原则）；如果一个类实现了两个接口，且两个接口中含有冲突的方法，且一个接口存在默认方法，必须程序员自己实现该方法来覆盖接口的方法（并不是直接选取其中的一个默认实现），如果两个接口冲突的方法都不存在默认方法，则该类本身就是抽象的，不存在方法冲突的问题。</p>
+<p>​ lambda表达式形式：（参数） -&gt;
+表达式，表达式可以是代码块并用return语句返回，即使没有参数，也不能省略小括号；如果参数类型可以被推导出来，则可以省略参数类型；如果参数只有一个且类型可以被推导出来，则可以省略小括号和类型。</p>
+<p>​
+无需指定lambda表达式的返回值类型，它总是可以根据上下文推导出来的。</p>
+<p>​
+如果一个lambda表达式只在部分分支返回值，而在另一些分支不返回值，这样的表达式是不合法的。</p>
+<p>​
+对于只有一个抽象方法的接口，需要这种接口的对象时，就可以提供一个lambda表达式，这种接口成为函数式接口。</p>
+<p>​
+lambda表达式有三个部分：一个代码块；参数；自由变量的值，指的是非参数而且不在代码中定义的量，但是在lambda表达式中只能引用值不会改变的变量。</p>
+<p>​
+内部类既可以访问自身的数据域，也可以访问创建它的外围类对象的数据域。</p>
+<p>​ 内部类中声明的所有静态域都必须是 final 的；内部类中不允许有 static
+方法。</p>
+<h4 id="异常断言和日志">异常、断言和日志</h4>
+<p>​ 在Java中，异常对象都是派生于 Throwable
+类的一个实例。需要注意的是，虽然所有的异常都是由Throwable继承而来，但在下一层立即分解为两个分支：Error和Exception。</p>
+<p>​ Error类层次结构描述了Java
+运行时系统的内部错误和资源耗尽错误。应用程序不应该抛出这种类型的对象。如果出现了这样的内部错误，除了通告给用户，并尽力使程序安全地终止之外，再也无能为力了。这种情况很少出现。</p>
+<p>​
+由程序错误导致的异常属于RuntimeException;而程序本身没有问题，但由于像I/O错误这类问题导致的异常属于其他异常。</p>
+<p>​ 派生于RuntimeException的异常包含下面几种情况： ​ •错误的类型转换。
+​ •数组访问越界i。 ​ •访问null指针。 ​ 不是派生于RuntimeException
+的异常包括： ​ •试图在文件尾部后面读取数据。 ​
+•试图打开一个不存在的文件。 ​ •试图根据给定的字符串查找Class
+对象，而这个字符串表示的类并不存在。</p>
+<p>​ throws抛出的是异常类，throw抛出的是具体异常类实例化的对象。</p>
+<p>​
+当多个异常捕获处理的逻辑一样时，可以用一个catch语句块进行捕获。但是只有当捕获的异常类型彼此之间不存在子类关系时才可以用一个catch语句块捕获多个异常，并且捕获多个异常时，异常变量隐含为final变量。</p>
+<p>​ 在catch子句中可以抛出一个异常，这样做的目的是改变异常的类型。</p>
+<p>​ 当finally子句包含return
+语句时，将会出现一种意想不到的结果，假设利用return语句从try语句块中退出。在方法返回前，finally
+子句的内容将被执行。如果finally 子句中也有一个return
+语句，这个返回值将会覆盖原始的返回值。具体来说，就是先执行try语句块中的return语句，但并不返回，继续执行finally语句块中的语句，执行完后再返回。</p>
+<h4 id="泛型程序设计">泛型程序设计</h4>
+<p>​ 在Java SE 7 及以后的版本中，
+构造函数中可以省略泛型类型，比如：<code>ArrayList&lt;String&gt; files = new ArrayList&lt;&gt;();</code></p>
+<p>​ 类型参数的魅力在于：使得程序具有更好的可读性和安全性。</p>
+<p>​ 泛型类可看作普通类的工厂。</p>
+<p>​
+泛型方法可以定义在普通类中，也可以定义在泛型类中。当调用一个泛型方法时，在方法名前的尖括号中放人具体的类型。</p>
+<p>​ 一个类型变量或通配符可以有多个限定，
+例如：<code>T extends Comparable &amp; Serializable</code> ，限定类型用“
+&amp;” 分隔，而逗号用来分隔类型变量。</p>
+<h4 id="集合">集合</h4>
+<p><img data-src="/images/java_collection.png" /></p>
+<p>​
+当在程序中使用队列时，一旦构建了集合就不需要知道究竟使用了哪种实现。因此，只有在构建集合对象时，使用具体的类才有意义。可以使用接口类型存放集合的引用，比如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Queue&lt;Customer&gt; expressLane = <span class="keyword">new</span> <span class="title class_">CircularArrayQueue</span>&lt;&gt;(<span class="number">100</span>) :</span><br><span class="line">expressLane.add(<span class="keyword">new</span> <span class="title class_">Customer</span>(<span class="string">&quot;Harry&quot;</span>));</span><br></pre></td></tr></table></figure>
+<p>利用这种方式，一旦改变了想法，可以轻松地使用另外一种不同的实现。只需要对程序的一个地方做出修改，即调用构造器的地方。如果觉得LinkedListQueue是个更好的选择，就将代码修改为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Queue&lt;Customer&gt; expressLane = <span class="keyword">new</span> <span class="title class_">LinkedListQueue</span>&lt;&gt;() ;</span><br><span class="line">expressLane.add(<span class="keyword">new</span> <span class="title class_">Customer</span>(<span class="string">&quot;Harry&quot;</span>));</span><br></pre></td></tr></table></figure>
+<p>​
+访问集合元素时，需要先使用hasNext方法判断集合中是否还有元素，如果有的话再使用next方法访问。</p>
+<p>​
+利用迭代器删除集合元素的时候必须先访问再删除，即remove方法的调用依赖于next方法，类似的，不能连续调用两次remove方法来删除连续的两个集合元素。</p>
+<p>​ Iterator和ListIterator之间的主要区别：</p>
+<p>​ 1、遍历</p>
+<p>​
+使用Iterator，可以遍历所有集合，如Map，List，Set；但只能在向前方向上遍历集合中的元素。</p>
+<p>​
+使用ListIterator，只能遍历List实现的对象，但可以向前和向后遍历集合中的元素。</p>
+<p>​ 2、添加元素</p>
+<p>​ Iterator无法向集合中添加元素；而ListIteror可以向集合添加元素。</p>
+<p>​ 3、修改元素</p>
+<p>​
+Iterator无法修改集合中的元素；而ListIterator可以使用set()方法修改集合中的元素。set()方法用一个新元素取代调用next()或previous()方法返回的上一个元素。</p>
+<p>​ 4、索引</p>
+<p>​
+Iterator无法获取集合中元素的索引；而使用ListIterator，可以获取集合中元素的索引。</p>
+<p>​
+ArrayList和Vector的主要区别在于Vector类的所有方法都是同步的，而ArrayList方法不是同步的。</p>
+<p>​ 对于散列表，在Java中用链表数组实现，每个列表被称作桶。在JavaSE 8
+中，桶满时会从链表变为平衡二叉树。如果选择的散列函数不当，会产生很多冲突，或者如果有恶意代码试图在散列表中填充多个有相同散列码的值，这样就能提高性能。</p>
+<p>​
+如果大致知道最终会有多少个元素要插人到散列表中，就可以设置桶数。通常，将桶数设置为预计元素个数的75%
+~
+150%。有些研究人员认为：尽管还没有确凿的证据，但最好将桶数设置为一个素数，以防键的集聚。</p>
+<p>​ 散列表可以用于实现几个重要的数据结构。其中最简单的是set
+类型，set是没有重复元素的元素集合。set的add方法首先在集合中查找要添加的对象，如果不存在，就将这个对象添加进去。Java集合类库提供了一个HashSet类，它实现了基于散列表的集合，可以用add方法添加元素。contains方法已经被重新定义，用来快速地查看某个元素是否已经出现在集中，它只在某个桶中査找元素，而不必查看集合中的所有元素。同时，如果元素的散列码发生了改变（一般来说就是值改变），元素在数据结构中的位置也会发生变化。</p>
+<p>​
+TreeSet类（当前使用红黑树实现）与散列集十分类似，不过，它比散列集有所改进。树集是一个有序集合(
+sorted collection )
+，可以以任意顺序将元素插入到集合中。在对集合进行遍历时，每个值将自动地按照排序后的顺序呈现。</p>
+<p>​
+要使用树集，必须能够比较元素。这些元素必须实现Comparable接口，或者构造集时必须提供一个Comparator。为此，并不是树集就优于散列表，虽然表面上看树集比散列表多了有序的性质，但是在一些情况下，元素之间的比较不是那么容易，计算散列值一般都是比较容易的，此时在不要求元素有序的情况下就可以选择使用散列表。</p>
+<p>​
+队列可以让人们有效地在尾部添加一个元素，在头部删除一个元素。有两个端头的队列，即双端队列，可以让人们有效地在头部和尾部同时添加或删除元素，不支持在队列中间添加元素。在Java
+SE
+6中引人了Deque接口，并由ArrayDeque和LinkedList类实现。这两个类都提供了双端队列，而且在必要时可以增加队列的长度。</p>
+<p>​
+通常，我们知道某些键的信息，并想要查找与之对应的元素。映射（map）就是为此设计的。映射用来存放键/值对，如果提供了键，就能够查找到值。Java类库为映射提供了两个通用的实现：HashMap和TreeMap，这两个类都实现了Map接口。</p>
+<p>​
+散列映射对键进行散列，树映射用键的整体顺序对元素进行排序，并将其组织成搜索树。</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+              <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 读书笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/07/%E8%AF%AD%E5%BD%95/" rel="next" title="语录">
+                  语录 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">屈少</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

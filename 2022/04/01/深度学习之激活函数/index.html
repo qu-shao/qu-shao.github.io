@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"qushao.icu","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="深度学习中常用的几种激活函数的总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习之激活函数">
+<meta property="og:url" content="http://qushao.icu/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="屈少">
+<meta property="og:description" content="深度学习中常用的几种激活函数的总结">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://qushao.icu/images/sigmoid.png">
+<meta property="og:image" content="http://qushao.icu/images/tanh.png">
+<meta property="og:image" content="http://qushao.icu/images/relu">
+<meta property="og:image" content="http://qushao.icu/images/lrelu.png">
+<meta property="og:image" content="http://qushao.icu/images/elu.png">
+<meta property="og:image" content="http://qushao.icu/images/softplus.png">
+<meta property="article:published_time" content="2022-04-01T14:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-01T14:41:58.980Z">
+<meta property="article:author" content="屈少">
+<meta property="article:tag" content="读书笔记">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qushao.icu/images/sigmoid.png">
+
+
+<link rel="canonical" href="http://qushao.icu/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://qushao.icu/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/","path":"2022/04/01/深度学习之激活函数/","title":"深度学习之激活函数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>深度学习之激活函数 | 屈少</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">屈少</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">深度学习之激活函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sigmoid%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.Sigmoid函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tanhhyperbolic-tangent-function%E5%8F%8C%E6%9B%B2%E6%AD%A3%E5%88%87%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.2.</span> <span class="nav-text">2.Tanh（Hyperbolic
+tangent function，双曲正切激活函数）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#relulinear-rectification-function%E7%BA%BF%E6%80%A7%E6%95%B4%E6%B5%81%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.3.</span> <span class="nav-text">3.ReLU（Linear
+rectification function，线性整流函数）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leaky-relu-%E5%B8%A6%E6%B3%84%E9%9C%B2%E7%BA%BF%E6%80%A7%E6%95%B4%E6%B5%81%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.4.</span> <span class="nav-text">4.Leaky ReLU
+（带泄露线性整流函数）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#eluexponential-linear-unit%E6%8C%87%E6%95%B0%E7%BA%BF%E6%80%A7%E5%8D%95%E5%85%83"><span class="nav-number">1.0.5.</span> <span class="nav-text">5.ELU（Exponential
+Linear Unit，指数线性单元）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#softplus"><span class="nav-number">1.0.6.</span> <span class="nav-text">6.SoftPlus</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="屈少"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">屈少</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qu-shao" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qu-shao" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qudeying@gmail.com" title="E-Mail → mailto:qudeying@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/6083512326" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6083512326" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/8797901" title="Bilibili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;8797901" rel="noopener" target="_blank"><i class="fab fa-television fa-fw"></i>Bilibili</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/qu-shao" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://qushao.icu/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="屈少">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="屈少">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="深度学习之激活函数 | 屈少">
+      <meta itemprop="description" content="深度学习中常用的几种激活函数的总结">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度学习之激活函数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-04-01 22:00:00 / Modified: 22:41:58" itemprop="dateCreated datePublished" datetime="2022-04-01T22:00:00+08:00">2022-04-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">深度学习中常用的几种激活函数的总结</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="深度学习之激活函数">深度学习之激活函数</h2>
+<p>​
+最近在系统地学习一些深度学习的知识，发现其中的激活函数很有意思，激活函数的选择也往往可以作为深度学习中调优的一种手段，针对不同的数据、不同的问题采取合适的激活函数，往往可以取得比较好的效果。结合网上的一些文章以及自己的理解，在此记录一下以便之后复习。
+​
+首先要明确的是激活函数的作用，激活函数在神经网络中将神经元上经过权重计算完毕的输入以某种方式（根据具体选择的激活函数）进行映射，从而输出作为该神经元对于下一层网络的输入，那么明明已经对输入根据参数进行了权重计算为什么仍然需要激活函数呢？激活函数的作用在于增加网络的非线性，我们知道，一般的权重计算往往是Wx
++
+b的形式，即神经元对于输入进行线性组合，如果不使用激活函数，那么无论神经网络有多少层，最终的结果仍然是线性的，即该计算可以用一层网络替代，这种神经网络一般不能解决复杂一点的问题。而使用激活函数后，每一层网络间就不仅仅是线性的叠加，我们通过使用非线性激活函数的方式来使得神经网络具有了解决非线性问题的能力。
+​ 以下是常用的几种激活函数。</p>
+<h4 id="sigmoid函数">1.Sigmoid函数</h4>
+<p>公式： <span class="math display">\[ f(x)=\frac{1}{1+e^{-x}}
+\]</span> 图像：</p>
+<p><img data-src="/images/sigmoid.png" /></p>
+<p>​
+Sigmoid是早期较为常用的激活函数，我们可以看出，Sigmoid函数的值域为(0,
+1)，这相当于对数据进行了归一化处理，又因为概率的值域为[0,
+1]，故Sigmoid很适合一些将概率作为输出的模型。同时，Sigmoid的图像比较平滑，这避免了输出存在较大的跳跃。</p>
+<p>​
+但是，Sigmoid的平均值不是0（一般来说输出的均值为0的模型效果较好一些），同时，因为函数涉及到指数计算，而参数的更新又依赖于梯度下降，所以计算的时间一般较长。</p>
+<h4
+id="tanhhyperbolic-tangent-function双曲正切激活函数">2.Tanh（Hyperbolic
+tangent function，双曲正切激活函数）</h4>
+<p>公式： <span class="math display">\[
+f(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}=\frac{2}{1+e^{-2x}}-1
+\]</span> 图像：</p>
+<p><img data-src="/images/tanh.png" /></p>
+<p>​
+同Sigmoid函数类似，Tanh函数也是一条平滑的S型曲线，但是Tanh函数的平均值为0，同时，对于负输入，Tanh将其映射为负，对于正输入，Tanh将其映射为正</p>
+<h4 id="relulinear-rectification-function线性整流函数">3.ReLU（Linear
+rectification function，线性整流函数）</h4>
+<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
+0， x&lt;0\end{cases}=max(0,x) \]</span> 图像：</p>
+<p><img data-src="/images/relu" /></p>
+<p>​
+ReLU函数是深度学习中较为流行的一种激活函数，ReLU可以实现单侧抑制（即把一部分神经元置0），能够稀疏模型，Sigmoid
+和Tanh激活函数会导致一个非稀疏的神经网络，而ReLU大约 50%
+的神经元会处于激活状态，具有很好的稀疏性。同时，ReLU函数右侧线性部分梯度始终为1，具有宽兴奋边界的特性（即兴奋程度可以非常高），不会发生神经网络的梯度消失问题，能够加速梯度下降的收敛速度。而Tanh和Sigmoid在离0点近的时候梯度大，在远离0点的时候梯度小，容易出现梯度消失。ReLU的计算也较为简单。</p>
+<p>​
+ReLU的缺点在于ReLU函数的值域在0到正无穷，相当于给后一层的神经网络引入偏置偏移，会影响梯度下降的效率。另外，在训练时，如果参数在一次不恰当的更新后，某个ReLU神经元输出为0，那么这个神经元自身参数的梯度永远都会是0，在以后的训练过程中永远不能被激活。</p>
+<h4 id="leaky-relu-带泄露线性整流函数">4.Leaky ReLU
+（带泄露线性整流函数）</h4>
+<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
+\gamma x， x&lt;0\end{cases}=max(0,x)+\gamma min(0,x) \]</span>
+图像：</p>
+<p><img data-src="/images/lrelu.png" /></p>
+<p>​ 这里，r取0.01（r通常是0到1之间的数，通常取小于1的很小常数）。</p>
+<p>​ Leaky
+ReLU函数在输入x&lt;0时，能保持一个很小的梯度r。这样当神经元非激活时也能有一个非零的梯度可以更新参数，避免永远不能被激活，以便给网络继续学习的机会。特殊的，当不确定r，将r作为一个可学习的参数时，这种激活函数为PReLU。</p>
+<p>​ 总结性的：当r=0时，为ReLU；当r=常数时，为Leaky
+ReLU；当r=训练的参数时，为PReLU。理论上，后两者具有ReLU的所有优点并且避免了Dead
+ReLU问题，但是并没有实验能够证明后两者一定比ReLU更为优秀。一般在实验当中，我们可以首先试试ReLU的效果，当结果不大理想时可以试一试Leaky
+ReLU，而因为PReLU增加了需要学习的参数，建议只在训练数据集较大的情况下使用。</p>
+<h4 id="eluexponential-linear-unit指数线性单元">5.ELU（Exponential
+Linear Unit，指数线性单元）</h4>
+<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
+\alpha (e^x-1)， x&lt;0\end{cases} \]</span> 图像：</p>
+<p><img data-src="/images/elu.png" /></p>
+<p>​ 这里a取1。</p>
+<p>​
+ELU函数融合了Sigmoid和ReLU，左侧具有软饱和性，右侧无饱和性。右侧线性部分使得ELU能够缓解梯度消失，而左侧软饱能够让ELU对输入变化或噪声更鲁棒。ELU的输出均值接近于零，所以收敛速度更快。</p>
+<h4 id="softplus">6.SoftPlus</h4>
+<p>公式： <span class="math display">\[ f(x)=log(1+e^x) \]</span>
+图像：</p>
+<p><img data-src="/images/softplus.png" /></p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 读书笔记</a>
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 深度学习</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/08/HashMap%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F/" rel="prev" title="Java访问HashMap的方式">
+                  <i class="fa fa-chevron-left"></i> Java访问HashMap的方式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/01/hello-world/" rel="next" title="Hello World">
+                  Hello World <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">屈少</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
