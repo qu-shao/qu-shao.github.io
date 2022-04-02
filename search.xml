@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Java访问HashMap的方式</title>
+    <url>/2022/03/08/HashMap%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F/</url>
+    <content><![CDATA[<h1 id="java访问hashmap元素的方式">Java访问HashMap元素的方式</h1>
+<p>  HashMap作为最常用的集合之一，可以表示元素间的映射关系，或者用于数据的统计。</p>
+<p>  HashMap最多只允许一条记录的键为Null；允许多条记录的值为
+Null。（不允许键重复，但允许值重复）</p>
+<p>  HashMap不支持线程的同步（任一时刻可以有多个线程同时写HashMap，即线程非安全），可能会导致数据的不一致。如果需要同步，可以用Collections的synchronizedMap()方法使HashMap具有同步的能力，或者使ConcurrentHashMap。</p>
+<p>  Hashtable与HashMap类似。不同的是：它不允许记录的键或者值为空；它支持线程的同步（任一时刻只有一个线程能写Hashtable，即线程安全），因此也导致了Hashtable在写入时会比较慢。</p>
+<p>  最近在刷算法题中，发现经常需要使用它，所以这里对Java访问HashMap元素的方式进行一个汇总，一方面巩固学习，另一方面方便日后查看使用。</p>
+<hr />
+<h4
+id="第一种方式通过key来访问value">第一种方式：通过Key来访问Value</h4>
+<p>  HashMap中内置的方法keySet()可以返回一个hashmap中所有key的set集合，再根据得到的key就可以访问hashmap中对应key的value。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(String key : hm.keySet())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> hm.get(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h4
+id="第二种方式通过map.keyset使用iterator访问key和value">第二种方式：通过Map.keySet()使用iterator访问key和value</h4>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">Iterator&lt;String&gt; it = hm.keySet().iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> it.next();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> hm.get(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h4
+id="第三种方式通过map.entry访问key和value">第三种方式：通过Map.Entry()访问key和value</h4>
+<p>  entrySet()方法将返回映射中包含的映射的 Set 视图</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(Map.Entry&lt;String, String&gt; entry : hm.entrySet())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h4
+id="第四种方式通过map.entryset使用iterator访问key和value">第四种方式：通过Map.entrySet()使用iterator访问key和value</h4>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">Iterator&lt;Map.Entry&lt;String, String&gt;&gt; it = hm.entrySet().iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext())&#123;</span><br><span class="line">    Map.Entry&lt;String, String&gt; entry = it.next();</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h4
+id="第五种方式通过map.values遍历所有的value但是不能遍历键key">第五种方式：通过Map.values()遍历所有的value，但是不能遍历键key</h4>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(String value : hm.values())&#123;</span><br><span class="line">    <span class="comment">/* 处理逻辑 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<p>  上述五种方式中，除了最后一种方式只能获取HashMap的value，其余方式都可以同时获取到key和value；同时，方式一和方式二都是使用keySet()方法先获取到key的集合再访问value，只是方式二在对key的获取上使用了迭代器，类似的方式三和方式四也是这样。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>读书笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>语录</title>
     <url>/2021/12/07/%E8%AF%AD%E5%BD%95/</url>
     <content><![CDATA[<h2 id="语录">语录</h2>
@@ -58,6 +101,81 @@ white, but a delicious shade of grey.）</p>
       <tags>
         <tag>读书</tag>
         <tag>语录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习之激活函数</title>
+    <url>/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="深度学习之激活函数">深度学习之激活函数</h2>
+<p>​
+最近在系统地学习一些深度学习的知识，发现其中的激活函数很有意思，激活函数的选择也往往可以作为深度学习中调优的一种手段，针对不同的数据、不同的问题采取合适的激活函数，往往可以取得比较好的效果。结合网上的一些文章以及自己的理解，在此记录一下以便之后复习。
+​
+首先要明确的是激活函数的作用，激活函数在神经网络中将神经元上经过权重计算完毕的输入以某种方式（根据具体选择的激活函数）进行映射，从而输出作为该神经元对于下一层网络的输入，那么明明已经对输入根据参数进行了权重计算为什么仍然需要激活函数呢？激活函数的作用在于增加网络的非线性，我们知道，一般的权重计算往往是Wx
++
+b的形式，即神经元对于输入进行线性组合，如果不使用激活函数，那么无论神经网络有多少层，最终的结果仍然是线性的，即该计算可以用一层网络替代，这种神经网络一般不能解决复杂一点的问题。而使用激活函数后，每一层网络间就不仅仅是线性的叠加，我们通过使用非线性激活函数的方式来使得神经网络具有了解决非线性问题的能力。
+​ 以下是常用的几种激活函数。</p>
+<h4 id="sigmoid函数">1.Sigmoid函数</h4>
+<p>公式： <span class="math display">\[ f(x)=\frac{1}{1+e^{-x}}
+\]</span> 图像：</p>
+<p><img data-src="/images/sigmoid.png" /></p>
+<p>​
+Sigmoid是早期较为常用的激活函数，我们可以看出，Sigmoid函数的值域为(0,
+1)，这相当于对数据进行了归一化处理，又因为概率的值域为[0,
+1]，故Sigmoid很适合一些将概率作为输出的模型。同时，Sigmoid的图像比较平滑，这避免了输出存在较大的跳跃。</p>
+<p>​
+但是，Sigmoid的平均值不是0（一般来说输出的均值为0的模型效果较好一些），同时，因为函数涉及到指数计算，而参数的更新又依赖于梯度下降，所以计算的时间一般较长。</p>
+<h4
+id="tanhhyperbolic-tangent-function双曲正切激活函数">2.Tanh（Hyperbolic
+tangent function，双曲正切激活函数）</h4>
+<p>公式： <span class="math display">\[
+f(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}=\frac{2}{1+e^{-2x}}-1
+\]</span> 图像：</p>
+<p><img data-src="/images/tanh.png" /></p>
+<p>​
+同Sigmoid函数类似，Tanh函数也是一条平滑的S型曲线，但是Tanh函数的平均值为0，同时，对于负输入，Tanh将其映射为负，对于正输入，Tanh将其映射为正</p>
+<h4 id="relulinear-rectification-function线性整流函数">3.ReLU（Linear
+rectification function，线性整流函数）</h4>
+<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
+0， x&lt;0\end{cases}=max(0,x) \]</span> 图像：</p>
+<p><img data-src="/images/relu.png" /></p>
+<p>​
+ReLU函数是深度学习中较为流行的一种激活函数，ReLU可以实现单侧抑制（即把一部分神经元置0），能够稀疏模型，Sigmoid
+和Tanh激活函数会导致一个非稀疏的神经网络，而ReLU大约 50%
+的神经元会处于激活状态，具有很好的稀疏性。同时，ReLU函数右侧线性部分梯度始终为1，具有宽兴奋边界的特性（即兴奋程度可以非常高），不会发生神经网络的梯度消失问题，能够加速梯度下降的收敛速度。而Tanh和Sigmoid在离0点近的时候梯度大，在远离0点的时候梯度小，容易出现梯度消失。ReLU的计算也较为简单。</p>
+<p>​
+ReLU的缺点在于ReLU函数的值域在0到正无穷，相当于给后一层的神经网络引入偏置偏移，会影响梯度下降的效率。另外，在训练时，如果参数在一次不恰当的更新后，某个ReLU神经元输出为0，那么这个神经元自身参数的梯度永远都会是0，在以后的训练过程中永远不能被激活。</p>
+<h4 id="leaky-relu-带泄露线性整流函数">4.Leaky ReLU
+（带泄露线性整流函数）</h4>
+<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
+\gamma x， x&lt;0\end{cases}=max(0,x)+\gamma min(0,x) \]</span>
+图像：</p>
+<p><img data-src="/images/lrelu.png" /></p>
+<p>​ 这里，r取0.01（r通常是0到1之间的数，通常取小于1的很小常数）。</p>
+<p>​ Leaky
+ReLU函数在输入x&lt;0时，能保持一个很小的梯度r。这样当神经元非激活时也能有一个非零的梯度可以更新参数，避免永远不能被激活，以便给网络继续学习的机会。特殊的，当不确定r，将r作为一个可学习的参数时，这种激活函数为PReLU。</p>
+<p>​ 总结性的：当r=0时，为ReLU；当r=常数时，为Leaky
+ReLU；当r=训练的参数时，为PReLU。理论上，后两者具有ReLU的所有优点并且避免了Dead
+ReLU问题，但是并没有实验能够证明后两者一定比ReLU更为优秀。一般在实验当中，我们可以首先试试ReLU的效果，当结果不大理想时可以试一试Leaky
+ReLU，而因为PReLU增加了需要学习的参数，建议只在训练数据集较大的情况下使用。</p>
+<h4 id="eluexponential-linear-unit指数线性单元">5.ELU（Exponential
+Linear Unit，指数线性单元）</h4>
+<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
+\alpha (e^x-1)， x&lt;0\end{cases} \]</span> 图像：</p>
+<p><img data-src="/images/elu.png" /></p>
+<p>​ 这里a取1。</p>
+<p>​
+ELU函数融合了Sigmoid和ReLU，左侧具有软饱和性，右侧无饱和性。右侧线性部分使得ELU能够缓解梯度消失，而左侧软饱能够让ELU对输入变化或噪声更鲁棒。ELU的输出均值接近于零，所以收敛速度更快。</p>
+<h4 id="softplus">6.SoftPlus</h4>
+<p>公式： <span class="math display">\[ f(x)=log(1+e^x) \]</span>
+图像：</p>
+<p><img data-src="/images/softplus.png" /></p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>读书笔记</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -303,124 +421,6 @@ SE
       <tags>
         <tag>Java</tag>
         <tag>读书笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java访问HashMap的方式</title>
-    <url>/2022/03/08/HashMap%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F/</url>
-    <content><![CDATA[<h1 id="java访问hashmap元素的方式">Java访问HashMap元素的方式</h1>
-<p>  HashMap作为最常用的集合之一，可以表示元素间的映射关系，或者用于数据的统计。</p>
-<p>  HashMap最多只允许一条记录的键为Null；允许多条记录的值为
-Null。（不允许键重复，但允许值重复）</p>
-<p>  HashMap不支持线程的同步（任一时刻可以有多个线程同时写HashMap，即线程非安全），可能会导致数据的不一致。如果需要同步，可以用Collections的synchronizedMap()方法使HashMap具有同步的能力，或者使ConcurrentHashMap。</p>
-<p>  Hashtable与HashMap类似。不同的是：它不允许记录的键或者值为空；它支持线程的同步（任一时刻只有一个线程能写Hashtable，即线程安全），因此也导致了Hashtable在写入时会比较慢。</p>
-<p>  最近在刷算法题中，发现经常需要使用它，所以这里对Java访问HashMap元素的方式进行一个汇总，一方面巩固学习，另一方面方便日后查看使用。</p>
-<hr />
-<h4
-id="第一种方式通过key来访问value">第一种方式：通过Key来访问Value</h4>
-<p>  HashMap中内置的方法keySet()可以返回一个hashmap中所有key的set集合，再根据得到的key就可以访问hashmap中对应key的value。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(String key : hm.keySet())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> hm.get(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr />
-<h4
-id="第二种方式通过map.keyset使用iterator访问key和value">第二种方式：通过Map.keySet()使用iterator访问key和value</h4>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">Iterator&lt;String&gt; it = hm.keySet().iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> it.next();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> hm.get(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr />
-<h4
-id="第三种方式通过map.entry访问key和value">第三种方式：通过Map.Entry()访问key和value</h4>
-<p>  entrySet()方法将返回映射中包含的映射的 Set 视图</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(Map.Entry&lt;String, String&gt; entry : hm.entrySet())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr />
-<h4
-id="第四种方式通过map.entryset使用iterator访问key和value">第四种方式：通过Map.entrySet()使用iterator访问key和value</h4>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">Iterator&lt;Map.Entry&lt;String, String&gt;&gt; it = hm.entrySet().iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext())&#123;</span><br><span class="line">    Map.Entry&lt;String, String&gt; entry = it.next();</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr />
-<h4
-id="第五种方式通过map.values遍历所有的value但是不能遍历键key">第五种方式：通过Map.values()遍历所有的value，但是不能遍历键key</h4>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(String value : hm.values())&#123;</span><br><span class="line">    <span class="comment">/* 处理逻辑 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr />
-<p>  上述五种方式中，除了最后一种方式只能获取HashMap的value，其余方式都可以同时获取到key和value；同时，方式一和方式二都是使用keySet()方法先获取到key的集合再访问value，只是方式二在对key的获取上使用了迭代器，类似的方式三和方式四也是这样。</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>读书笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>深度学习之激活函数</title>
-    <url>/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="深度学习之激活函数">深度学习之激活函数</h2>
-<p>​
-最近在系统地学习一些深度学习的知识，发现其中的激活函数很有意思，激活函数的选择也往往可以作为深度学习中调优的一种手段，针对不同的数据、不同的问题采取合适的激活函数，往往可以取得比较好的效果。结合网上的一些文章以及自己的理解，在此记录一下以便之后复习。
-​
-首先要明确的是激活函数的作用，激活函数在神经网络中将神经元上经过权重计算完毕的输入以某种方式（根据具体选择的激活函数）进行映射，从而输出作为该神经元对于下一层网络的输入，那么明明已经对输入根据参数进行了权重计算为什么仍然需要激活函数呢？激活函数的作用在于增加网络的非线性，我们知道，一般的权重计算往往是Wx
-+
-b的形式，即神经元对于输入进行线性组合，如果不使用激活函数，那么无论神经网络有多少层，最终的结果仍然是线性的，即该计算可以用一层网络替代，这种神经网络一般不能解决复杂一点的问题。而使用激活函数后，每一层网络间就不仅仅是线性的叠加，我们通过使用非线性激活函数的方式来使得神经网络具有了解决非线性问题的能力。
-​ 以下是常用的几种激活函数。</p>
-<h4 id="sigmoid函数">1.Sigmoid函数</h4>
-<p>公式： <span class="math display">\[ f(x)=\frac{1}{1+e^{-x}}
-\]</span> 图像：</p>
-<p><img data-src="/images/sigmoid.png" /></p>
-<p>​
-Sigmoid是早期较为常用的激活函数，我们可以看出，Sigmoid函数的值域为(0,
-1)，这相当于对数据进行了归一化处理，又因为概率的值域为[0,
-1]，故Sigmoid很适合一些将概率作为输出的模型。同时，Sigmoid的图像比较平滑，这避免了输出存在较大的跳跃。</p>
-<p>​
-但是，Sigmoid的平均值不是0（一般来说输出的均值为0的模型效果较好一些），同时，因为函数涉及到指数计算，而参数的更新又依赖于梯度下降，所以计算的时间一般较长。</p>
-<h4
-id="tanhhyperbolic-tangent-function双曲正切激活函数">2.Tanh（Hyperbolic
-tangent function，双曲正切激活函数）</h4>
-<p>公式： <span class="math display">\[
-f(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}=\frac{2}{1+e^{-2x}}-1
-\]</span> 图像：</p>
-<p><img data-src="/images/tanh.png" /></p>
-<p>​
-同Sigmoid函数类似，Tanh函数也是一条平滑的S型曲线，但是Tanh函数的平均值为0，同时，对于负输入，Tanh将其映射为负，对于正输入，Tanh将其映射为正</p>
-<h4 id="relulinear-rectification-function线性整流函数">3.ReLU（Linear
-rectification function，线性整流函数）</h4>
-<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
-0， x&lt;0\end{cases}=max(0,x) \]</span> 图像：</p>
-<p><img data-src="/images/relu.png" /></p>
-<p>​
-ReLU函数是深度学习中较为流行的一种激活函数，ReLU可以实现单侧抑制（即把一部分神经元置0），能够稀疏模型，Sigmoid
-和Tanh激活函数会导致一个非稀疏的神经网络，而ReLU大约 50%
-的神经元会处于激活状态，具有很好的稀疏性。同时，ReLU函数右侧线性部分梯度始终为1，具有宽兴奋边界的特性（即兴奋程度可以非常高），不会发生神经网络的梯度消失问题，能够加速梯度下降的收敛速度。而Tanh和Sigmoid在离0点近的时候梯度大，在远离0点的时候梯度小，容易出现梯度消失。ReLU的计算也较为简单。</p>
-<p>​
-ReLU的缺点在于ReLU函数的值域在0到正无穷，相当于给后一层的神经网络引入偏置偏移，会影响梯度下降的效率。另外，在训练时，如果参数在一次不恰当的更新后，某个ReLU神经元输出为0，那么这个神经元自身参数的梯度永远都会是0，在以后的训练过程中永远不能被激活。</p>
-<h4 id="leaky-relu-带泄露线性整流函数">4.Leaky ReLU
-（带泄露线性整流函数）</h4>
-<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
-\gamma x， x&lt;0\end{cases}=max(0,x)+\gamma min(0,x) \]</span>
-图像：</p>
-<p><img data-src="/images/lrelu.png" /></p>
-<p>​ 这里，r取0.01（r通常是0到1之间的数，通常取小于1的很小常数）。</p>
-<p>​ Leaky
-ReLU函数在输入x&lt;0时，能保持一个很小的梯度r。这样当神经元非激活时也能有一个非零的梯度可以更新参数，避免永远不能被激活，以便给网络继续学习的机会。特殊的，当不确定r，将r作为一个可学习的参数时，这种激活函数为PReLU。</p>
-<p>​ 总结性的：当r=0时，为ReLU；当r=常数时，为Leaky
-ReLU；当r=训练的参数时，为PReLU。理论上，后两者具有ReLU的所有优点并且避免了Dead
-ReLU问题，但是并没有实验能够证明后两者一定比ReLU更为优秀。一般在实验当中，我们可以首先试试ReLU的效果，当结果不大理想时可以试一试Leaky
-ReLU，而因为PReLU增加了需要学习的参数，建议只在训练数据集较大的情况下使用。</p>
-<h4 id="eluexponential-linear-unit指数线性单元">5.ELU（Exponential
-Linear Unit，指数线性单元）</h4>
-<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
-\alpha (e^x-1)， x&lt;0\end{cases} \]</span> 图像：</p>
-<p><img data-src="/images/elu.png" /></p>
-<p>​ 这里a取1。</p>
-<p>​
-ELU函数融合了Sigmoid和ReLU，左侧具有软饱和性，右侧无饱和性。右侧线性部分使得ELU能够缓解梯度消失，而左侧软饱能够让ELU对输入变化或噪声更鲁棒。ELU的输出均值接近于零，所以收敛速度更快。</p>
-<h4 id="softplus">6.SoftPlus</h4>
-<p>公式： <span class="math display">\[ f(x)=log(1+e^x) \]</span>
-图像：</p>
-<p><img data-src="/images/softplus.png" /></p>
-]]></content>
-      <categories>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>读书笔记</tag>
-        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
