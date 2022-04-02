@@ -44,164 +44,6 @@ id="第五种方式通过map.values遍历所有的value但是不能遍历键key"
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2021/12/01/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvLw==">Hexo<i class="fa fa-external-link-alt"></i></span>! This is your very
-first post. Check <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mv">documentation<i class="fa fa-external-link-alt"></i></span> for
-more info. If you get any problems when using Hexo, you can find the
-answer in <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3MvdHJvdWJsZXNob290aW5nLmh0bWw=">troubleshooting<i class="fa fa-external-link-alt"></i></span> or
-you can ask me on <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hleG9qcy9oZXhvL2lzc3Vlcw==">GitHub<i class="fa fa-external-link-alt"></i></span>.</p>
-<h2 id="quick-start">Quick Start</h2>
-<h3 id="create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvd3JpdGluZy5odG1s">Writing<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvc2VydmVyLmh0bWw=">Server<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3MvZ2VuZXJhdGluZy5odG1s">Generating<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvb25lLWNvbW1hbmQtZGVwbG95bWVudC5odG1s">Deployment<i class="fa fa-external-link-alt"></i></span></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>深度学习之激活函数</title>
-    <url>/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="深度学习之激活函数">深度学习之激活函数</h2>
-<p>​
-最近在系统地学习一些深度学习的知识，发现其中的激活函数很有意思，激活函数的选择也往往可以作为深度学习中调优的一种手段，针对不同的数据、不同的问题采取合适的激活函数，往往可以取得比较好的效果。结合网上的一些文章以及自己的理解，在此记录一下以便之后复习。
-​
-首先要明确的是激活函数的作用，激活函数在神经网络中将神经元上经过权重计算完毕的输入以某种方式（根据具体选择的激活函数）进行映射，从而输出作为该神经元对于下一层网络的输入，那么明明已经对输入根据参数进行了权重计算为什么仍然需要激活函数呢？激活函数的作用在于增加网络的非线性，我们知道，一般的权重计算往往是Wx
-+
-b的形式，即神经元对于输入进行线性组合，如果不使用激活函数，那么无论神经网络有多少层，最终的结果仍然是线性的，即该计算可以用一层网络替代，这种神经网络一般不能解决复杂一点的问题。而使用激活函数后，每一层网络间就不仅仅是线性的叠加，我们通过使用非线性激活函数的方式来使得神经网络具有了解决非线性问题的能力。
-​ 以下是常用的几种激活函数。</p>
-<h4 id="sigmoid函数">1.Sigmoid函数</h4>
-<p>公式： <span class="math display">\[ f(x)=\frac{1}{1+e^{-x}}
-\]</span> 图像：</p>
-<p><img data-src="/images/sigmoid.png" /></p>
-<p>​
-Sigmoid是早期较为常用的激活函数，我们可以看出，Sigmoid函数的值域为(0,
-1)，这相当于对数据进行了归一化处理，又因为概率的值域为[0,
-1]，故Sigmoid很适合一些将概率作为输出的模型。同时，Sigmoid的图像比较平滑，这避免了输出存在较大的跳跃。</p>
-<p>​
-但是，Sigmoid的平均值不是0（一般来说输出的均值为0的模型效果较好一些），同时，因为函数涉及到指数计算，而参数的更新又依赖于梯度下降，所以计算的时间一般较长。</p>
-<h4
-id="tanhhyperbolic-tangent-function双曲正切激活函数">2.Tanh（Hyperbolic
-tangent function，双曲正切激活函数）</h4>
-<p>公式： <span class="math display">\[
-f(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}=\frac{2}{1+e^{-2x}}-1
-\]</span> 图像：</p>
-<p><img data-src="/images/tanh.png" /></p>
-<p>​
-同Sigmoid函数类似，Tanh函数也是一条平滑的S型曲线，但是Tanh函数的平均值为0，同时，对于负输入，Tanh将其映射为负，对于正输入，Tanh将其映射为正</p>
-<h4 id="relulinear-rectification-function线性整流函数">3.ReLU（Linear
-rectification function，线性整流函数）</h4>
-<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
-0， x&lt;0\end{cases}=max(0,x) \]</span> 图像：</p>
-<p><img data-src="/images/relu.png" /></p>
-<p>​
-ReLU函数是深度学习中较为流行的一种激活函数，ReLU可以实现单侧抑制（即把一部分神经元置0），能够稀疏模型，Sigmoid
-和Tanh激活函数会导致一个非稀疏的神经网络，而ReLU大约 50%
-的神经元会处于激活状态，具有很好的稀疏性。同时，ReLU函数右侧线性部分梯度始终为1，具有宽兴奋边界的特性（即兴奋程度可以非常高），不会发生神经网络的梯度消失问题，能够加速梯度下降的收敛速度。而Tanh和Sigmoid在离0点近的时候梯度大，在远离0点的时候梯度小，容易出现梯度消失。ReLU的计算也较为简单。</p>
-<p>​
-ReLU的缺点在于ReLU函数的值域在0到正无穷，相当于给后一层的神经网络引入偏置偏移，会影响梯度下降的效率。另外，在训练时，如果参数在一次不恰当的更新后，某个ReLU神经元输出为0，那么这个神经元自身参数的梯度永远都会是0，在以后的训练过程中永远不能被激活。</p>
-<h4 id="leaky-relu-带泄露线性整流函数">4.Leaky ReLU
-（带泄露线性整流函数）</h4>
-<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
-\gamma x， x&lt;0\end{cases}=max(0,x)+\gamma min(0,x) \]</span>
-图像：</p>
-<p><img data-src="/images/lrelu.png" /></p>
-<p>​ 这里，r取0.01（r通常是0到1之间的数，通常取小于1的很小常数）。</p>
-<p>​ Leaky
-ReLU函数在输入x&lt;0时，能保持一个很小的梯度r。这样当神经元非激活时也能有一个非零的梯度可以更新参数，避免永远不能被激活，以便给网络继续学习的机会。特殊的，当不确定r，将r作为一个可学习的参数时，这种激活函数为PReLU。</p>
-<p>​ 总结性的：当r=0时，为ReLU；当r=常数时，为Leaky
-ReLU；当r=训练的参数时，为PReLU。理论上，后两者具有ReLU的所有优点并且避免了Dead
-ReLU问题，但是并没有实验能够证明后两者一定比ReLU更为优秀。一般在实验当中，我们可以首先试试ReLU的效果，当结果不大理想时可以试一试Leaky
-ReLU，而因为PReLU增加了需要学习的参数，建议只在训练数据集较大的情况下使用。</p>
-<h4 id="eluexponential-linear-unit指数线性单元">5.ELU（Exponential
-Linear Unit，指数线性单元）</h4>
-<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
-\alpha (e^x-1)， x&lt;0\end{cases} \]</span> 图像：</p>
-<p><img data-src="/images/elu.png" /></p>
-<p>​ 这里a取1。</p>
-<p>​
-ELU函数融合了Sigmoid和ReLU，左侧具有软饱和性，右侧无饱和性。右侧线性部分使得ELU能够缓解梯度消失，而左侧软饱能够让ELU对输入变化或噪声更鲁棒。ELU的输出均值接近于零，所以收敛速度更快。</p>
-<h4 id="softplus">6.SoftPlus</h4>
-<p>公式： <span class="math display">\[ f(x)=log(1+e^x) \]</span>
-图像：</p>
-<p><img data-src="/images/softplus.png" /></p>
-]]></content>
-      <categories>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>读书笔记</tag>
-        <tag>深度学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>语录</title>
-    <url>/2021/12/07/%E8%AF%AD%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="语录">语录</h2>
-<p><img data-src="/images/sentence_top_img.jpg" /></p>
-<p>​
-也许吧，因为人要接受事与愿违啊。我们太有限了，我们只能做我们觉得是对的事情，然后接受，它的事与愿违。因为人生所有东西，它都是有负斜率的。在跑的时候，可能慢慢的负斜率，使得偏离了最初的目标，这是人的有限性。所以这就是为什么不要对自己所投入的事情、所看中的事情，抱有不加边际的幻想和热情。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  苏格拉底说过：“对于你懂的东西，你才会真正地认同。对于你不懂的东西，你不可能真正地认同。”</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人最大的痛苦就是在于无法跨越知道和做到的那个鸿沟。笛卡尔说：“我思故我在”，这个很对，但是，“我思故我在”
-会经常让我们沉浸于一种幻想之中，就是我们只要思考到了，我们就能做到。但其实不是这样。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人片刻的感动，不可能持久的感动。很多人所谓的被你影响，只是片刻的感动了，最终还是投入到自己以前的生活。片刻的感动，在很多时候是一种自我欺骗。你在欺骗自己，你也在欺骗别人，你也让别人陷入到一种自我欺骗。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  我们画不出一个完美的圆，但完美的圆是存在的。虽不能至，心向往之。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人都是会犯错误的，所以就是永远要接受我们所有的看法都是在偏见之中。我们的一生都是像苏格拉底所说的，走出那个偏见的洞穴。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人这一生自己能决定的也许只有 5%，有 95%
-是你决定不了的，你的努力也许只是那 5% 的一个支点，撬动了那 95%
-的命运。但是你不要把所有的功劳归给你自己，你飞得越高，你要注意有根线是拉着你的，像气球一样，如果你说我太厉害了，我没有必要受这个线的约束，最后你会爆炸的。因此你要感恩你生命中所拥有的一切。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  奥古斯丁在《忏悔录》中说过这样一段话：“当你问我时间是什么，如果你不问我，我感觉自己还知道，你一旦问我，我就茫然无知了。”
-昨天的已经成为过去，明天的还没有到来，所以今天是一个礼物，大家把今天当作一个礼物，去珍惜享受你现在拥有的平凡的幸福。因为这种幸福现在你觉得平凡，但到你失去那一天，你会觉得它是如此的珍贵。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  世界即不黑也不白，而是一道精致的灰。（The world is not black or
-white, but a delicious shade of grey.）</p>
-<p align="right">
-—— 英雄联盟卡密尔台词
-</p>
-<p>  人在少年的时候，大多会经历一场情不知所起一往而深的感情，或者是因为他成绩好，或者是他擅长打篮球，或者是言行有趣，或者是长得好看。总之就是某个不经意的刹那，怦然心动。但大多数时候，它来得突然，却也无疾而终，在某年某月，等你再回首的时候，想起自己曾经的一往情深，不免哑然失笑。那些曾经我们看来很美好的事物，也会随着时间的流逝，而变得无关紧要。对于很多人来说终其一生会遇到很多人，但可能要倾尽所有的运气，才会遇见到特别的那一个。</p>
-<p align="right">
-——b 站 up 主阿斗归来了讲解电影《怦然心动》
-</p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>读书</tag>
-        <tag>语录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java核心技术·卷Ⅰ读书笔记</title>
     <url>/2021/12/07/Java%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="java核心技术卷ⅰ读书笔记">Java核心技术·卷Ⅰ读书笔记</h2>
@@ -444,6 +286,164 @@ SE
       <tags>
         <tag>Java</tag>
         <tag>读书笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/12/01/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvLw==">Hexo<i class="fa fa-external-link-alt"></i></span>! This is your very
+first post. Check <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mv">documentation<i class="fa fa-external-link-alt"></i></span> for
+more info. If you get any problems when using Hexo, you can find the
+answer in <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3MvdHJvdWJsZXNob290aW5nLmh0bWw=">troubleshooting<i class="fa fa-external-link-alt"></i></span> or
+you can ask me on <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hleG9qcy9oZXhvL2lzc3Vlcw==">GitHub<i class="fa fa-external-link-alt"></i></span>.</p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvd3JpdGluZy5odG1s">Writing<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvc2VydmVyLmh0bWw=">Server<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3MvZ2VuZXJhdGluZy5odG1s">Generating<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvb25lLWNvbW1hbmQtZGVwbG95bWVudC5odG1s">Deployment<i class="fa fa-external-link-alt"></i></span></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>语录</title>
+    <url>/2021/12/07/%E8%AF%AD%E5%BD%95/</url>
+    <content><![CDATA[<h2 id="语录">语录</h2>
+<p><img data-src="/images/sentence_top_img.jpg" /></p>
+<p>​
+也许吧，因为人要接受事与愿违啊。我们太有限了，我们只能做我们觉得是对的事情，然后接受，它的事与愿违。因为人生所有东西，它都是有负斜率的。在跑的时候，可能慢慢的负斜率，使得偏离了最初的目标，这是人的有限性。所以这就是为什么不要对自己所投入的事情、所看中的事情，抱有不加边际的幻想和热情。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  苏格拉底说过：“对于你懂的东西，你才会真正地认同。对于你不懂的东西，你不可能真正地认同。”</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人最大的痛苦就是在于无法跨越知道和做到的那个鸿沟。笛卡尔说：“我思故我在”，这个很对，但是，“我思故我在”
+会经常让我们沉浸于一种幻想之中，就是我们只要思考到了，我们就能做到。但其实不是这样。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人片刻的感动，不可能持久的感动。很多人所谓的被你影响，只是片刻的感动了，最终还是投入到自己以前的生活。片刻的感动，在很多时候是一种自我欺骗。你在欺骗自己，你也在欺骗别人，你也让别人陷入到一种自我欺骗。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  我们画不出一个完美的圆，但完美的圆是存在的。虽不能至，心向往之。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人都是会犯错误的，所以就是永远要接受我们所有的看法都是在偏见之中。我们的一生都是像苏格拉底所说的，走出那个偏见的洞穴。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人这一生自己能决定的也许只有 5%，有 95%
+是你决定不了的，你的努力也许只是那 5% 的一个支点，撬动了那 95%
+的命运。但是你不要把所有的功劳归给你自己，你飞得越高，你要注意有根线是拉着你的，像气球一样，如果你说我太厉害了，我没有必要受这个线的约束，最后你会爆炸的。因此你要感恩你生命中所拥有的一切。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  奥古斯丁在《忏悔录》中说过这样一段话：“当你问我时间是什么，如果你不问我，我感觉自己还知道，你一旦问我，我就茫然无知了。”
+昨天的已经成为过去，明天的还没有到来，所以今天是一个礼物，大家把今天当作一个礼物，去珍惜享受你现在拥有的平凡的幸福。因为这种幸福现在你觉得平凡，但到你失去那一天，你会觉得它是如此的珍贵。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  世界即不黑也不白，而是一道精致的灰。（The world is not black or
+white, but a delicious shade of grey.）</p>
+<p align="right">
+—— 英雄联盟卡密尔台词
+</p>
+<p>  人在少年的时候，大多会经历一场情不知所起一往而深的感情，或者是因为他成绩好，或者是他擅长打篮球，或者是言行有趣，或者是长得好看。总之就是某个不经意的刹那，怦然心动。但大多数时候，它来得突然，却也无疾而终，在某年某月，等你再回首的时候，想起自己曾经的一往情深，不免哑然失笑。那些曾经我们看来很美好的事物，也会随着时间的流逝，而变得无关紧要。对于很多人来说终其一生会遇到很多人，但可能要倾尽所有的运气，才会遇见到特别的那一个。</p>
+<p align="right">
+——b 站 up 主阿斗归来了讲解电影《怦然心动》
+</p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>读书</tag>
+        <tag>语录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习之激活函数</title>
+    <url>/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="深度学习之激活函数">深度学习之激活函数</h2>
+<p>​
+最近在系统地学习一些深度学习的知识，发现其中的激活函数很有意思，激活函数的选择也往往可以作为深度学习中调优的一种手段，针对不同的数据、不同的问题采取合适的激活函数，往往可以取得比较好的效果。结合网上的一些文章以及自己的理解，在此记录一下以便之后复习。
+​
+首先要明确的是激活函数的作用，激活函数在神经网络中将神经元上经过权重计算完毕的输入以某种方式（根据具体选择的激活函数）进行映射，从而输出作为该神经元对于下一层网络的输入，那么明明已经对输入根据参数进行了权重计算为什么仍然需要激活函数呢？激活函数的作用在于增加网络的非线性，我们知道，一般的权重计算往往是Wx
++
+b的形式，即神经元对于输入进行线性组合，如果不使用激活函数，那么无论神经网络有多少层，最终的结果仍然是线性的，即该计算可以用一层网络替代，这种神经网络一般不能解决复杂一点的问题。而使用激活函数后，每一层网络间就不仅仅是线性的叠加，我们通过使用非线性激活函数的方式来使得神经网络具有了解决非线性问题的能力。
+​ 以下是常用的几种激活函数。</p>
+<h4 id="sigmoid函数">1.Sigmoid函数</h4>
+<p>公式： <span class="math display">\[ f(x)=\frac{1}{1+e^{-x}}
+\]</span> 图像：</p>
+<p><img data-src="/images/sigmoid.png" /></p>
+<p>​
+Sigmoid是早期较为常用的激活函数，我们可以看出，Sigmoid函数的值域为(0,
+1)，这相当于对数据进行了归一化处理，又因为概率的值域为[0,
+1]，故Sigmoid很适合一些将概率作为输出的模型。同时，Sigmoid的图像比较平滑，这避免了输出存在较大的跳跃。</p>
+<p>​
+但是，Sigmoid的平均值不是0（一般来说输出的均值为0的模型效果较好一些），同时，因为函数涉及到指数计算，而参数的更新又依赖于梯度下降，所以计算的时间一般较长。</p>
+<h4
+id="tanhhyperbolic-tangent-function双曲正切激活函数">2.Tanh（Hyperbolic
+tangent function，双曲正切激活函数）</h4>
+<p>公式： <span class="math display">\[
+f(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}=\frac{2}{1+e^{-2x}}-1
+\]</span> 图像：</p>
+<p><img data-src="/images/tanh.png" /></p>
+<p>​
+同Sigmoid函数类似，Tanh函数也是一条平滑的S型曲线，但是Tanh函数的平均值为0，同时，对于负输入，Tanh将其映射为负，对于正输入，Tanh将其映射为正</p>
+<h4 id="relulinear-rectification-function线性整流函数">3.ReLU（Linear
+rectification function，线性整流函数）</h4>
+<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
+0， x&lt;0\end{cases}=max(0,x) \]</span> 图像：</p>
+<p><img data-src="/images/relu.png" /></p>
+<p>​
+ReLU函数是深度学习中较为流行的一种激活函数，ReLU可以实现单侧抑制（即把一部分神经元置0），能够稀疏模型，Sigmoid
+和Tanh激活函数会导致一个非稀疏的神经网络，而ReLU大约 50%
+的神经元会处于激活状态，具有很好的稀疏性。同时，ReLU函数右侧线性部分梯度始终为1，具有宽兴奋边界的特性（即兴奋程度可以非常高），不会发生神经网络的梯度消失问题，能够加速梯度下降的收敛速度。而Tanh和Sigmoid在离0点近的时候梯度大，在远离0点的时候梯度小，容易出现梯度消失。ReLU的计算也较为简单。</p>
+<p>​
+ReLU的缺点在于ReLU函数的值域在0到正无穷，相当于给后一层的神经网络引入偏置偏移，会影响梯度下降的效率。另外，在训练时，如果参数在一次不恰当的更新后，某个ReLU神经元输出为0，那么这个神经元自身参数的梯度永远都会是0，在以后的训练过程中永远不能被激活。</p>
+<h4 id="leaky-relu-带泄露线性整流函数">4.Leaky ReLU
+（带泄露线性整流函数）</h4>
+<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
+\gamma x， x&lt;0\end{cases}=max(0,x)+\gamma min(0,x) \]</span>
+图像：</p>
+<p><img data-src="/images/lrelu.png" /></p>
+<p>​ 这里，r取0.01（r通常是0到1之间的数，通常取小于1的很小常数）。</p>
+<p>​ Leaky
+ReLU函数在输入x&lt;0时，能保持一个很小的梯度r。这样当神经元非激活时也能有一个非零的梯度可以更新参数，避免永远不能被激活，以便给网络继续学习的机会。特殊的，当不确定r，将r作为一个可学习的参数时，这种激活函数为PReLU。</p>
+<p>​ 总结性的：当r=0时，为ReLU；当r=常数时，为Leaky
+ReLU；当r=训练的参数时，为PReLU。理论上，后两者具有ReLU的所有优点并且避免了Dead
+ReLU问题，但是并没有实验能够证明后两者一定比ReLU更为优秀。一般在实验当中，我们可以首先试试ReLU的效果，当结果不大理想时可以试一试Leaky
+ReLU，而因为PReLU增加了需要学习的参数，建议只在训练数据集较大的情况下使用。</p>
+<h4 id="eluexponential-linear-unit指数线性单元">5.ELU（Exponential
+Linear Unit，指数线性单元）</h4>
+<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
+\alpha (e^x-1)， x&lt;0\end{cases} \]</span> 图像：</p>
+<p><img data-src="/images/elu.png" /></p>
+<p>​ 这里a取1。</p>
+<p>​
+ELU函数融合了Sigmoid和ReLU，左侧具有软饱和性，右侧无饱和性。右侧线性部分使得ELU能够缓解梯度消失，而左侧软饱能够让ELU对输入变化或噪声更鲁棒。ELU的输出均值接近于零，所以收敛速度更快。</p>
+<h4 id="softplus">6.SoftPlus</h4>
+<p>公式： <span class="math display">\[ f(x)=log(1+e^x) \]</span>
+图像：</p>
+<p><img data-src="/images/softplus.png" /></p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>读书笔记</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
 </search>
