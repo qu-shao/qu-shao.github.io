@@ -1,109 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>语录</title>
-    <url>/2021/12/07/%E8%AF%AD%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="语录">语录</h2>
-<p><img data-src="/images/sentence_top_img.jpg" /></p>
-<p>​
-也许吧，因为人要接受事与愿违啊。我们太有限了，我们只能做我们觉得是对的事情，然后接受，它的事与愿违。因为人生所有东西，它都是有负斜率的。在跑的时候，可能慢慢的负斜率，使得偏离了最初的目标，这是人的有限性。所以这就是为什么不要对自己所投入的事情、所看中的事情，抱有不加边际的幻想和热情。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  苏格拉底说过：“对于你懂的东西，你才会真正地认同。对于你不懂的东西，你不可能真正地认同。”</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人最大的痛苦就是在于无法跨越知道和做到的那个鸿沟。笛卡尔说：“我思故我在”，这个很对，但是，“我思故我在”
-会经常让我们沉浸于一种幻想之中，就是我们只要思考到了，我们就能做到。但其实不是这样。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人片刻的感动，不可能持久的感动。很多人所谓的被你影响，只是片刻的感动了，最终还是投入到自己以前的生活。片刻的感动，在很多时候是一种自我欺骗。你在欺骗自己，你也在欺骗别人，你也让别人陷入到一种自我欺骗。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  我们画不出一个完美的圆，但完美的圆是存在的。虽不能至，心向往之。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人都是会犯错误的，所以就是永远要接受我们所有的看法都是在偏见之中。我们的一生都是像苏格拉底所说的，走出那个偏见的洞穴。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人这一生自己能决定的也许只有 5%，有 95%
-是你决定不了的，你的努力也许只是那 5% 的一个支点，撬动了那 95%
-的命运。但是你不要把所有的功劳归给你自己，你飞得越高，你要注意有根线是拉着你的，像气球一样，如果你说我太厉害了，我没有必要受这个线的约束，最后你会爆炸的。因此你要感恩你生命中所拥有的一切。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  奥古斯丁在《忏悔录》中说过这样一段话：“当你问我时间是什么，如果你不问我，我感觉自己还知道，你一旦问我，我就茫然无知了。”
-昨天的已经成为过去，明天的还没有到来，所以今天是一个礼物，大家把今天当作一个礼物，去珍惜享受你现在拥有的平凡的幸福。因为这种幸福现在你觉得平凡，但到你失去那一天，你会觉得它是如此的珍贵。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  世界即不黑也不白，而是一道精致的灰。（The world is not black or
-white, but a delicious shade of grey.）</p>
-<p align="right">
-—— 英雄联盟卡密尔台词
-</p>
-<p>  人在少年的时候，大多会经历一场情不知所起一往而深的感情，或者是因为他成绩好，或者是他擅长打篮球，或者是言行有趣，或者是长得好看。总之就是某个不经意的刹那，怦然心动。但大多数时候，它来得突然，却也无疾而终，在某年某月，等你再回首的时候，想起自己曾经的一往情深，不免哑然失笑。那些曾经我们看来很美好的事物，也会随着时间的流逝，而变得无关紧要。对于很多人来说终其一生会遇到很多人，但可能要倾尽所有的运气，才会遇见到特别的那一个。</p>
-<p align="right">
-——b 站 up 主阿斗归来了讲解电影《怦然心动》
-</p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>读书</tag>
-        <tag>语录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java访问HashMap的方式</title>
-    <url>/2022/03/08/HashMap%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F/</url>
-    <content><![CDATA[<h1 id="java访问hashmap元素的方式">Java访问HashMap元素的方式</h1>
-<p>  HashMap作为最常用的集合之一，可以表示元素间的映射关系，或者用于数据的统计。</p>
-<p>  HashMap最多只允许一条记录的键为Null；允许多条记录的值为
-Null。（不允许键重复，但允许值重复）</p>
-<p>  HashMap不支持线程的同步（任一时刻可以有多个线程同时写HashMap，即线程非安全），可能会导致数据的不一致。如果需要同步，可以用Collections的synchronizedMap()方法使HashMap具有同步的能力，或者使ConcurrentHashMap。</p>
-<p>  Hashtable与HashMap类似。不同的是：它不允许记录的键或者值为空；它支持线程的同步（任一时刻只有一个线程能写Hashtable，即线程安全），因此也导致了Hashtable在写入时会比较慢。</p>
-<p>  最近在刷算法题中，发现经常需要使用它，所以这里对Java访问HashMap元素的方式进行一个汇总，一方面巩固学习，另一方面方便日后查看使用。</p>
-<hr />
-<h4
-id="第一种方式通过key来访问value">第一种方式：通过Key来访问Value</h4>
-<p>  HashMap中内置的方法keySet()可以返回一个hashmap中所有key的set集合，再根据得到的key就可以访问hashmap中对应key的value。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(String key : hm.keySet())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> hm.get(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr />
-<h4
-id="第二种方式通过map.keyset使用iterator访问key和value">第二种方式：通过Map.keySet()使用iterator访问key和value</h4>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">Iterator&lt;String&gt; it = hm.keySet().iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> it.next();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> hm.get(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr />
-<h4
-id="第三种方式通过map.entry访问key和value">第三种方式：通过Map.Entry()访问key和value</h4>
-<p>  entrySet()方法将返回映射中包含的映射的 Set 视图</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(Map.Entry&lt;String, String&gt; entry : hm.entrySet())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr />
-<h4
-id="第四种方式通过map.entryset使用iterator访问key和value">第四种方式：通过Map.entrySet()使用iterator访问key和value</h4>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">Iterator&lt;Map.Entry&lt;String, String&gt;&gt; it = hm.entrySet().iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext())&#123;</span><br><span class="line">    Map.Entry&lt;String, String&gt; entry = it.next();</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr />
-<h4
-id="第五种方式通过map.values遍历所有的value但是不能遍历键key">第五种方式：通过Map.values()遍历所有的value，但是不能遍历键key</h4>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(String value : hm.values())&#123;</span><br><span class="line">    <span class="comment">/* 处理逻辑 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr />
-<p>  上述五种方式中，除了最后一种方式只能获取HashMap的value，其余方式都可以同时获取到key和value；同时，方式一和方式二都是使用keySet()方法先获取到key的集合再访问value，只是方式二在对key的获取上使用了迭代器，类似的方式三和方式四也是这样。</p>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>读书笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java核心技术·卷Ⅰ读书笔记</title>
     <url>/2021/12/07/Java%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="java核心技术卷ⅰ读书笔记">Java核心技术·卷Ⅰ读书笔记</h2>
@@ -349,6 +246,72 @@ SE
       </tags>
   </entry>
   <entry>
+    <title>Java访问HashMap的方式</title>
+    <url>/2022/03/08/HashMap%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F/</url>
+    <content><![CDATA[<h1 id="java访问hashmap元素的方式">Java访问HashMap元素的方式</h1>
+<p>  HashMap作为最常用的集合之一，可以表示元素间的映射关系，或者用于数据的统计。</p>
+<p>  HashMap最多只允许一条记录的键为Null；允许多条记录的值为
+Null。（不允许键重复，但允许值重复）</p>
+<p>  HashMap不支持线程的同步（任一时刻可以有多个线程同时写HashMap，即线程非安全），可能会导致数据的不一致。如果需要同步，可以用Collections的synchronizedMap()方法使HashMap具有同步的能力，或者使ConcurrentHashMap。</p>
+<p>  Hashtable与HashMap类似。不同的是：它不允许记录的键或者值为空；它支持线程的同步（任一时刻只有一个线程能写Hashtable，即线程安全），因此也导致了Hashtable在写入时会比较慢。</p>
+<p>  最近在刷算法题中，发现经常需要使用它，所以这里对Java访问HashMap元素的方式进行一个汇总，一方面巩固学习，另一方面方便日后查看使用。</p>
+<hr />
+<h4
+id="第一种方式通过key来访问value">第一种方式：通过Key来访问Value</h4>
+<p>  HashMap中内置的方法keySet()可以返回一个hashmap中所有key的set集合，再根据得到的key就可以访问hashmap中对应key的value。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(String key : hm.keySet())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> hm.get(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h4
+id="第二种方式通过map.keyset使用iterator访问key和value">第二种方式：通过Map.keySet()使用iterator访问key和value</h4>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">Iterator&lt;String&gt; it = hm.keySet().iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> it.next();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> hm.get(key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h4
+id="第三种方式通过map.entry访问key和value">第三种方式：通过Map.Entry()访问key和value</h4>
+<p>  entrySet()方法将返回映射中包含的映射的 Set 视图</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(Map.Entry&lt;String, String&gt; entry : hm.entrySet())&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h4
+id="第四种方式通过map.entryset使用iterator访问key和value">第四种方式：通过Map.entrySet()使用iterator访问key和value</h4>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">Iterator&lt;Map.Entry&lt;String, String&gt;&gt; it = hm.entrySet().iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext())&#123;</span><br><span class="line">    Map.Entry&lt;String, String&gt; entry = it.next();</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">    <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h4
+id="第五种方式通过map.values遍历所有的value但是不能遍历键key">第五种方式：通过Map.values()遍历所有的value，但是不能遍历键key</h4>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Map&lt;String, String&gt; hm = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span>(String value : hm.values())&#123;</span><br><span class="line">    <span class="comment">/* 处理逻辑 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<p>  上述五种方式中，除了最后一种方式只能获取HashMap的value，其余方式都可以同时获取到key和value；同时，方式一和方式二都是使用keySet()方法先获取到key的集合再访问value，只是方式二在对key的获取上使用了迭代器，类似的方式三和方式四也是这样。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>读书笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/12/01/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvLw==">Hexo<i class="fa fa-external-link-alt"></i></span>! This is your very
+first post. Check <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mv">documentation<i class="fa fa-external-link-alt"></i></span> for
+more info. If you get any problems when using Hexo, you can find the
+answer in <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3MvdHJvdWJsZXNob290aW5nLmh0bWw=">troubleshooting<i class="fa fa-external-link-alt"></i></span> or
+you can ask me on <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hleG9qcy9oZXhvL2lzc3Vlcw==">GitHub<i class="fa fa-external-link-alt"></i></span>.</p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvd3JpdGluZy5odG1s">Writing<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvc2VydmVyLmh0bWw=">Server<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3MvZ2VuZXJhdGluZy5odG1s">Generating<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvb25lLWNvbW1hbmQtZGVwbG95bWVudC5odG1s">Deployment<i class="fa fa-external-link-alt"></i></span></p>
+]]></content>
+  </entry>
+  <entry>
     <title>深度学习之激活函数</title>
     <url>/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h2 id="深度学习之激活函数">深度学习之激活函数</h2>
@@ -424,26 +387,63 @@ ELU函数融合了Sigmoid和ReLU，左侧具有软饱和性，右侧无饱和性
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2021/12/01/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvLw==">Hexo<i class="fa fa-external-link-alt"></i></span>! This is your very
-first post. Check <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mv">documentation<i class="fa fa-external-link-alt"></i></span> for
-more info. If you get any problems when using Hexo, you can find the
-answer in <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3MvdHJvdWJsZXNob290aW5nLmh0bWw=">troubleshooting<i class="fa fa-external-link-alt"></i></span> or
-you can ask me on <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hleG9qcy9oZXhvL2lzc3Vlcw==">GitHub<i class="fa fa-external-link-alt"></i></span>.</p>
-<h2 id="quick-start">Quick Start</h2>
-<h3 id="create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvd3JpdGluZy5odG1s">Writing<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvc2VydmVyLmh0bWw=">Server<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3MvZ2VuZXJhdGluZy5odG1s">Generating<i class="fa fa-external-link-alt"></i></span></p>
-<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvb25lLWNvbW1hbmQtZGVwbG95bWVudC5odG1s">Deployment<i class="fa fa-external-link-alt"></i></span></p>
+    <title>语录</title>
+    <url>/2021/12/07/%E8%AF%AD%E5%BD%95/</url>
+    <content><![CDATA[<h2 id="语录">语录</h2>
+<p><img data-src="/images/sentence_top_img.jpg" /></p>
+<p>​
+也许吧，因为人要接受事与愿违啊。我们太有限了，我们只能做我们觉得是对的事情，然后接受，它的事与愿违。因为人生所有东西，它都是有负斜率的。在跑的时候，可能慢慢的负斜率，使得偏离了最初的目标，这是人的有限性。所以这就是为什么不要对自己所投入的事情、所看中的事情，抱有不加边际的幻想和热情。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  苏格拉底说过：“对于你懂的东西，你才会真正地认同。对于你不懂的东西，你不可能真正地认同。”</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人最大的痛苦就是在于无法跨越知道和做到的那个鸿沟。笛卡尔说：“我思故我在”，这个很对，但是，“我思故我在”
+会经常让我们沉浸于一种幻想之中，就是我们只要思考到了，我们就能做到。但其实不是这样。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人片刻的感动，不可能持久的感动。很多人所谓的被你影响，只是片刻的感动了，最终还是投入到自己以前的生活。片刻的感动，在很多时候是一种自我欺骗。你在欺骗自己，你也在欺骗别人，你也让别人陷入到一种自我欺骗。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  我们画不出一个完美的圆，但完美的圆是存在的。虽不能至，心向往之。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人都是会犯错误的，所以就是永远要接受我们所有的看法都是在偏见之中。我们的一生都是像苏格拉底所说的，走出那个偏见的洞穴。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人这一生自己能决定的也许只有 5%，有 95%
+是你决定不了的，你的努力也许只是那 5% 的一个支点，撬动了那 95%
+的命运。但是你不要把所有的功劳归给你自己，你飞得越高，你要注意有根线是拉着你的，像气球一样，如果你说我太厉害了，我没有必要受这个线的约束，最后你会爆炸的。因此你要感恩你生命中所拥有的一切。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  奥古斯丁在《忏悔录》中说过这样一段话：“当你问我时间是什么，如果你不问我，我感觉自己还知道，你一旦问我，我就茫然无知了。”
+昨天的已经成为过去，明天的还没有到来，所以今天是一个礼物，大家把今天当作一个礼物，去珍惜享受你现在拥有的平凡的幸福。因为这种幸福现在你觉得平凡，但到你失去那一天，你会觉得它是如此的珍贵。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  世界即不黑也不白，而是一道精致的灰。（The world is not black or
+white, but a delicious shade of grey.）</p>
+<p align="right">
+—— 英雄联盟卡密尔台词
+</p>
+<p>  人在少年的时候，大多会经历一场情不知所起一往而深的感情，或者是因为他成绩好，或者是他擅长打篮球，或者是言行有趣，或者是长得好看。总之就是某个不经意的刹那，怦然心动。但大多数时候，它来得突然，却也无疾而终，在某年某月，等你再回首的时候，想起自己曾经的一往情深，不免哑然失笑。那些曾经我们看来很美好的事物，也会随着时间的流逝，而变得无关紧要。对于很多人来说终其一生会遇到很多人，但可能要倾尽所有的运气，才会遇见到特别的那一个。</p>
+<p align="right">
+——b 站 up 主阿斗归来了讲解电影《怦然心动》
+</p>
 ]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>读书</tag>
+        <tag>语录</tag>
+      </tags>
   </entry>
 </search>
