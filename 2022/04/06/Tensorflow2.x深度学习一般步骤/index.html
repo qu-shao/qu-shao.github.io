@@ -24,36 +24,32 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"qushao.icu","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="深度学习中常用的几种激活函数的总结">
+    <meta name="description" content="使用Tensorflow2.5实现了基本的神经网络的构建，数据集为MNIST（手写数字识别）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="深度学习之激活函数">
-<meta property="og:url" content="http://qushao.icu/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:title" content="Tensorflow2.x深度学习使用Sequential一般步骤">
+<meta property="og:url" content="http://qushao.icu/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/index.html">
 <meta property="og:site_name" content="屈少">
-<meta property="og:description" content="深度学习中常用的几种激活函数的总结">
+<meta property="og:description" content="使用Tensorflow2.5实现了基本的神经网络的构建，数据集为MNIST（手写数字识别）">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://qushao.icu/images/sigmoid.png">
-<meta property="og:image" content="http://qushao.icu/images/tanh.png">
-<meta property="og:image" content="http://qushao.icu/images/relu.png">
-<meta property="og:image" content="http://qushao.icu/images/lrelu.png">
-<meta property="og:image" content="http://qushao.icu/images/elu.png">
-<meta property="og:image" content="http://qushao.icu/images/softplus.png">
-<meta property="article:published_time" content="2022-04-01T14:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-02T03:05:33.206Z">
+<meta property="og:image" content="http://qushao.icu/images/mnist.png">
+<meta property="article:published_time" content="2022-04-06T06:40:00.000Z">
+<meta property="article:modified_time" content="2022-04-06T06:48:33.445Z">
 <meta property="article:author" content="屈少">
 <meta property="article:tag" content="读书笔记">
 <meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="Tensorflow">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://qushao.icu/images/sigmoid.png">
+<meta name="twitter:image" content="http://qushao.icu/images/mnist.png">
 
 
-<link rel="canonical" href="http://qushao.icu/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">
+<link rel="canonical" href="http://qushao.icu/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://qushao.icu/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/","path":"2022/04/01/深度学习之激活函数/","title":"深度学习之激活函数"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://qushao.icu/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/","path":"2022/04/06/Tensorflow2.x深度学习一般步骤/","title":"Tensorflow2.x深度学习使用Sequential一般步骤"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>深度学习之激活函数 | 屈少</title>
+<title>Tensorflow2.x深度学习使用Sequential一般步骤 | 屈少</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WKP2CMZE2V"></script>
   <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-WKP2CMZE2V","only_pageview":false}</script>
@@ -160,11 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">深度学习之激活函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sigmoid%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.Sigmoid函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tanhhyperbolic-tangent-function%E5%8F%8C%E6%9B%B2%E6%AD%A3%E5%88%87%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.2.</span> <span class="nav-text">2.Tanh（Hyperbolic
-tangent function，双曲正切激活函数）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#relulinear-rectification-function%E7%BA%BF%E6%80%A7%E6%95%B4%E6%B5%81%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.3.</span> <span class="nav-text">3.ReLU（Linear
-rectification function，线性整流函数）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leaky-relu-%E5%B8%A6%E6%B3%84%E9%9C%B2%E7%BA%BF%E6%80%A7%E6%95%B4%E6%B5%81%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.4.</span> <span class="nav-text">4.Leaky ReLU
-（带泄露线性整流函数）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#eluexponential-linear-unit%E6%8C%87%E6%95%B0%E7%BA%BF%E6%80%A7%E5%8D%95%E5%85%83"><span class="nav-number">1.0.5.</span> <span class="nav-text">5.ELU（Exponential
-Linear Unit，指数线性单元）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#softplus"><span class="nav-number">1.0.6.</span> <span class="nav-text">6.SoftPlus</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BD%BF%E7%94%A8sequential%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.</span> <span class="nav-text">Tensorflow2.x深度学习使用Sequential一般步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">实验代码：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">1.2.</span> <span class="nav-text">实验结果：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">实验总结：</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -249,7 +241,7 @@ Linear Unit，指数线性单元）</span></a></li><li class="nav-item nav-level
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://qushao.icu/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="http://qushao.icu/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -262,12 +254,12 @@ Linear Unit，指数线性单元）</span></a></li><li class="nav-item nav-level
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="深度学习之激活函数 | 屈少">
-      <meta itemprop="description" content="深度学习中常用的几种激活函数的总结">
+      <meta itemprop="name" content="Tensorflow2.x深度学习使用Sequential一般步骤 | 屈少">
+      <meta itemprop="description" content="使用Tensorflow2.5实现了基本的神经网络的构建，数据集为MNIST（手写数字识别）">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          深度学习之激活函数
+          Tensorflow2.x深度学习使用Sequential一般步骤
         </h1>
 
         <div class="post-meta-container">
@@ -277,15 +269,9 @@ Linear Unit，指数线性单元）</span></a></li><li class="nav-item nav-level
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
+      
 
-      <time title="Created: 2022-04-01 22:00:00" itemprop="dateCreated datePublished" datetime="2022-04-01T22:00:00+08:00">2022-04-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-04-02 11:05:33" itemprop="dateModified" datetime="2022-04-02T11:05:33+08:00">2022-04-02</time>
+      <time title="Created: 2022-04-06 14:40:00 / Modified: 14:48:33" itemprop="dateCreated datePublished" datetime="2022-04-06T14:40:00+08:00">2022-04-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -298,7 +284,7 @@ Linear Unit，指数线性单元）</span></a></li><li class="nav-item nav-level
     </span>
 
   
-    <span id="/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" class="post-meta-item leancloud_visitors" data-flag-title="深度学习之激活函数" title="Views">
+    <span id="/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/" class="post-meta-item leancloud_visitors" data-flag-title="Tensorflow2.x深度学习使用Sequential一般步骤" title="Views">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -320,8 +306,8 @@ Linear Unit，指数线性单元）</span></a></li><li class="nav-item nav-level
       </span>
       <span class="post-meta-item-text">Changyan: </span>
     
-    <a title="深度学习之激活函数" href="/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/#SOHUCS" itemprop="discussionUrl">
-      <span id="sourceId::d2ab2337e8ef7833a9c45eddf68cda24" class="cy_cmt_count" itemprop="commentCount"></span>
+    <a title="Tensorflow2.x深度学习使用Sequential一般步骤" href="/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::fad98ffec2cbac9c0e39facb1e1bafbc" class="cy_cmt_count" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -334,15 +320,15 @@ Linear Unit，指数线性单元）</span></a></li><li class="nav-item nav-level
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/01/深度学习之激活函数/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/06/Tensorflow2.x深度学习一般步骤/" itemprop="commentCount"></span>
     </a>
   </span>
   
   
 </div>
 
-            <div class="post-description">深度学习中常用的几种激活函数的总结</div>
+            <div class="post-description">使用Tensorflow2.5实现了基本的神经网络的构建，数据集为MNIST（手写数字识别）</div>
         </div>
       </header>
 
@@ -350,69 +336,42 @@ Linear Unit，指数线性单元）</span></a></li><li class="nav-item nav-level
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="深度学习之激活函数">深度学习之激活函数</h2>
-<p>​
-最近在系统地学习一些深度学习的知识，发现其中的激活函数很有意思，激活函数的选择也往往可以作为深度学习中调优的一种手段，针对不同的数据、不同的问题采取合适的激活函数，往往可以取得比较好的效果。结合网上的一些文章以及自己的理解，在此记录一下以便之后复习。
-​
-首先要明确的是激活函数的作用，激活函数在神经网络中将神经元上经过权重计算完毕的输入以某种方式（根据具体选择的激活函数）进行映射，从而输出作为该神经元对于下一层网络的输入，那么明明已经对输入根据参数进行了权重计算为什么仍然需要激活函数呢？激活函数的作用在于增加网络的非线性，我们知道，一般的权重计算往往是Wx
-+
-b的形式，即神经元对于输入进行线性组合，如果不使用激活函数，那么无论神经网络有多少层，最终的结果仍然是线性的，即该计算可以用一层网络替代，这种神经网络一般不能解决复杂一点的问题。而使用激活函数后，每一层网络间就不仅仅是线性的叠加，我们通过使用非线性激活函数的方式来使得神经网络具有了解决非线性问题的能力。
-​ 以下是常用的几种激活函数。</p>
-<h4 id="sigmoid函数">1.Sigmoid函数</h4>
-<p>公式： <span class="math display">\[ f(x)=\frac{1}{1+e^{-x}}
-\]</span> 图像：</p>
-<p><img data-src="/images/sigmoid.png" /></p>
-<p>​
-Sigmoid是早期较为常用的激活函数，我们可以看出，Sigmoid函数的值域为(0,
-1)，这相当于对数据进行了归一化处理，又因为概率的值域为[0,
-1]，故Sigmoid很适合一些将概率作为输出的模型。同时，Sigmoid的图像比较平滑，这避免了输出存在较大的跳跃。</p>
-<p>​
-但是，Sigmoid的平均值不是0（一般来说输出的均值为0的模型效果较好一些），同时，因为函数涉及到指数计算，而参数的更新又依赖于梯度下降，所以计算的时间一般较长。</p>
-<h4
-id="tanhhyperbolic-tangent-function双曲正切激活函数">2.Tanh（Hyperbolic
-tangent function，双曲正切激活函数）</h4>
-<p>公式： <span class="math display">\[
-f(x)=tanh(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}}=\frac{2}{1+e^{-2x}}-1
-\]</span> 图像：</p>
-<p><img data-src="/images/tanh.png" /></p>
-<p>​
-同Sigmoid函数类似，Tanh函数也是一条平滑的S型曲线，但是Tanh函数的平均值为0，同时，对于负输入，Tanh将其映射为负，对于正输入，Tanh将其映射为正</p>
-<h4 id="relulinear-rectification-function线性整流函数">3.ReLU（Linear
-rectification function，线性整流函数）</h4>
-<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
-0， x&lt;0\end{cases}=max(0,x) \]</span> 图像：</p>
-<p><img data-src="/images/relu.png" /></p>
-<p>​
-ReLU函数是深度学习中较为流行的一种激活函数，ReLU可以实现单侧抑制（即把一部分神经元置0），能够稀疏模型，Sigmoid
-和Tanh激活函数会导致一个非稀疏的神经网络，而ReLU大约 50%
-的神经元会处于激活状态，具有很好的稀疏性。同时，ReLU函数右侧线性部分梯度始终为1，具有宽兴奋边界的特性（即兴奋程度可以非常高），不会发生神经网络的梯度消失问题，能够加速梯度下降的收敛速度。而Tanh和Sigmoid在离0点近的时候梯度大，在远离0点的时候梯度小，容易出现梯度消失。ReLU的计算也较为简单。</p>
-<p>​
-ReLU的缺点在于ReLU函数的值域在0到正无穷，相当于给后一层的神经网络引入偏置偏移，会影响梯度下降的效率。另外，在训练时，如果参数在一次不恰当的更新后，某个ReLU神经元输出为0，那么这个神经元自身参数的梯度永远都会是0，在以后的训练过程中永远不能被激活。</p>
-<h4 id="leaky-relu-带泄露线性整流函数">4.Leaky ReLU
-（带泄露线性整流函数）</h4>
-<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
-\gamma x， x&lt;0\end{cases}=max(0,x)+\gamma min(0,x) \]</span>
-图像：</p>
-<p><img data-src="/images/lrelu.png" /></p>
-<p>​ 这里，r取0.01（r通常是0到1之间的数，通常取小于1的很小常数）。</p>
-<p>​ Leaky
-ReLU函数在输入x&lt;0时，能保持一个很小的梯度r。这样当神经元非激活时也能有一个非零的梯度可以更新参数，避免永远不能被激活，以便给网络继续学习的机会。特殊的，当不确定r，将r作为一个可学习的参数时，这种激活函数为PReLU。</p>
-<p>​ 总结性的：当r=0时，为ReLU；当r=常数时，为Leaky
-ReLU；当r=训练的参数时，为PReLU。理论上，后两者具有ReLU的所有优点并且避免了Dead
-ReLU问题，但是并没有实验能够证明后两者一定比ReLU更为优秀。一般在实验当中，我们可以首先试试ReLU的效果，当结果不大理想时可以试一试Leaky
-ReLU，而因为PReLU增加了需要学习的参数，建议只在训练数据集较大的情况下使用。</p>
-<h4 id="eluexponential-linear-unit指数线性单元">5.ELU（Exponential
-Linear Unit，指数线性单元）</h4>
-<p>公式： <span class="math display">\[ f(x)=\begin{cases} x，x\geq0\\
-\alpha (e^x-1)， x&lt;0\end{cases} \]</span> 图像：</p>
-<p><img data-src="/images/elu.png" /></p>
-<p>​ 这里a取1。</p>
-<p>​
-ELU函数融合了Sigmoid和ReLU，左侧具有软饱和性，右侧无饱和性。右侧线性部分使得ELU能够缓解梯度消失，而左侧软饱能够让ELU对输入变化或噪声更鲁棒。ELU的输出均值接近于零，所以收敛速度更快。</p>
-<h4 id="softplus">6.SoftPlus</h4>
-<p>公式： <span class="math display">\[ f(x)=log(1+e^x) \]</span>
-图像：</p>
-<p><img data-src="/images/softplus.png" /></p>
+        <h3
+id="tensorflow2.x深度学习使用sequential一般步骤">Tensorflow2.x深度学习使用Sequential一般步骤</h3>
+<hr />
+<ol type="1">
+<li>建立模型</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model = tf.keras.Sequential()</span><br><span class="line">model.add()</span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>查看摘要</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>配置训练方法</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.<span class="built_in">compile</span>()</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>训练模型</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.fit()</span><br></pre></td></tr></table></figure>
+<ol start="5" type="1">
+<li>评估模型</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.evaluate()</span><br></pre></td></tr></table></figure>
+<ol start="6" type="1">
+<li>使用模型</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.predict()</span><br></pre></td></tr></table></figure>
+<hr />
+<h4 id="实验代码">实验代码：</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据集</span></span><br><span class="line">mnist = tf.keras.datasets.mnist</span><br><span class="line">(train_x, train_y), (test_x, test_y) = mnist.load_data()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据预处理</span></span><br><span class="line">X_train = tf.cast(train_x/<span class="number">255.0</span>, tf.float32)</span><br><span class="line">X_test = tf.cast(test_x/<span class="number">255.0</span>, tf.float32)</span><br><span class="line">Y_train = tf.cast(train_y, tf.int16)</span><br><span class="line">Y_test = tf.cast(test_y, tf.int16)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立模型</span></span><br><span class="line">model = tf.keras.Sequential()</span><br><span class="line"><span class="comment"># 输入层，MNIST数据集每张图片大小为28*28，需要先将图片转换为一维张量</span></span><br><span class="line">model.add(tf.keras.layers.Flatten(input_shape=(<span class="number">28</span>, <span class="number">28</span>)))</span><br><span class="line"><span class="comment"># 一层隐藏层，为全连接层，节点个数为128</span></span><br><span class="line">model.add(tf.keras.layers.Dense(<span class="number">128</span>, activation=<span class="string">&quot;relu&quot;</span>))</span><br><span class="line"><span class="comment"># 输出层，MNIST共有10种结果，故节点数为10</span></span><br><span class="line">model.add(tf.keras.layers.Dense(<span class="number">10</span>, activation=<span class="string">&quot;softmax&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看模型</span></span><br><span class="line">model.summary()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置模型</span></span><br><span class="line">model.<span class="built_in">compile</span>(optimizer=<span class="string">&quot;adam&quot;</span>,</span><br><span class="line">              loss=<span class="string">&quot;sparse_categorical_crossentropy&quot;</span>,</span><br><span class="line">              metrics=[<span class="string">&quot;sparse_categorical_accuracy&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">model.fit(X_train, Y_train, batch_size=<span class="number">64</span>, epochs=<span class="number">10</span>, validation_split=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 评估模型</span></span><br><span class="line">model.evaluate(X_test, Y_test, verbose=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存模型</span></span><br><span class="line">model.save(<span class="string">&quot;mnist_model&quot;</span>, save_format=<span class="string">&quot;tf&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用模型</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>):</span><br><span class="line">    index = np.random.randint(<span class="number">0</span>, <span class="number">10000</span>)</span><br><span class="line">    <span class="comment"># 因为在输入层将数据转换为了一维数组，所以预测的时候也需要保证输入和输入层一致</span></span><br><span class="line">    demo = tf.reshape(X_test[index], (<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</span><br><span class="line">    y_pred = np.argmax(model.predict(demo))</span><br><span class="line">    plt.subplot(<span class="number">1</span>, <span class="number">6</span>, i+<span class="number">1</span>)</span><br><span class="line">    plt.axis(<span class="string">&quot;off&quot;</span>)</span><br><span class="line">    plt.imshow(test_x[index], cmap=<span class="string">&quot;gray&quot;</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;y=&quot;</span> + <span class="built_in">str</span>(test_y[index]) + <span class="string">&quot;\ny_pred=&quot;</span> + <span class="built_in">str</span>(y_pred))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<hr />
+<h4 id="实验结果">实验结果：</h4>
+<p><img data-src="/images/mnist.png" /></p>
+<hr />
+<h4 id="实验总结">实验总结：</h4>
+<p>其实对于一般的神经网络，构建的方法都很类似，它们主要的不同体现在对各种参数（比如优化器、激活函数、评价指标、损失函数）的选择以及隐藏层的数量、每一层的神经元个数上。我们需要注意的是虽然使用tf.keras.Sequential()构建神经网络只需要关注输入层和输出层的结构（隐藏层会自动根据上下层的结构生成对应的训练参数结构），但是必须保证使用模型预测时数据集的处理和模型一致（这也是本次实验中容易出错的地方）。</p>
 
     </div>
 
@@ -453,20 +412,18 @@ ELU函数融合了Sigmoid和ReLU，左侧具有软饱和性，右侧无饱和性
           <div class="post-tags">
               <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 读书笔记</a>
               <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 深度学习</a>
+              <a href="/tags/Tensorflow/" rel="tag"><i class="fa fa-tag"></i> Tensorflow</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/03/08/HashMap%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F/" rel="prev" title="Java访问HashMap的方式">
-                  <i class="fa fa-chevron-left"></i> Java访问HashMap的方式
+                <a href="/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" rel="prev" title="深度学习之激活函数">
+                  <i class="fa fa-chevron-left"></i> 深度学习之激活函数
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/" rel="next" title="Tensorflow2.x深度学习使用Sequential一般步骤">
-                  Tensorflow2.x深度学习使用Sequential一般步骤 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -486,7 +443,7 @@ ELU函数融合了Sigmoid和ReLU，左侧具有软饱和性，右侧无饱和性
         </ul>
         <div class="tab-content">
             <div class="tab-pane changyan" id="comment-changyan">
-              <div class="comments" id="SOHUCS" sid="d2ab2337e8ef7833a9c45eddf68cda24"></div>
+              <div class="comments" id="SOHUCS" sid="fad98ffec2cbac9c0e39facb1e1bafbc"></div>
             </div>
             <div class="tab-pane disqus" id="comment-disqus">
               
@@ -570,7 +527,7 @@ ELU函数融合了Sigmoid和ReLU，左侧具有软饱和性，右侧无饱和性
 
 
   <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://qushao.icu/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://qushao.icu/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/"}</script>
   <script src="/js/third-party/quicklink.js"></script>
 <script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw0fr0eC","appkey":"647f57b2988dfca28bf31b925114005b"}</script>
 <script src="/js/third-party/comments/changyan.js"></script>
