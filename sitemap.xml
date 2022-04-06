@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://qushao.icu/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/</loc>
+    
+    <lastmod>2022-04-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://qushao.icu/2021/12/07/%E8%AF%AD%E5%BD%95/</loc>
     
     <lastmod>2022-04-06</lastmod>
@@ -123,6 +132,13 @@
   
   <url>
     <loc>http://qushao.icu/tags/Tensorflow/</loc>
+    <lastmod>2022-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://qushao.icu/tags/%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/</loc>
     <lastmod>2022-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

@@ -24,32 +24,33 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"qushao.icu","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"disqus","storage":true,"lazyload":true,"nav":null,"activeClass":"disqus"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="使用Tensorflow2.5实现了基本的神经网络的构建，数据集为MNIST（手写数字识别）">
+    <meta name="description" content="使用Tensorflow2.5构建了多元逻辑回归模型，数据集为IRIS（鸢尾花）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tensorflow2.x深度学习使用Sequential一般步骤">
-<meta property="og:url" content="http://qushao.icu/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/index.html">
+<meta property="og:title" content="Tensorflow2.x实现多元逻辑回归">
+<meta property="og:url" content="http://qushao.icu/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/index.html">
 <meta property="og:site_name" content="屈少">
-<meta property="og:description" content="使用Tensorflow2.5实现了基本的神经网络的构建，数据集为MNIST（手写数字识别）">
+<meta property="og:description" content="使用Tensorflow2.5构建了多元逻辑回归模型，数据集为IRIS（鸢尾花）">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://qushao.icu/images/mnist.png">
-<meta property="article:published_time" content="2022-04-06T06:40:00.000Z">
-<meta property="article:modified_time" content="2022-04-06T06:48:33.445Z">
+<meta property="og:image" content="http://qushao.icu/images/iris.png">
+<meta property="article:published_time" content="2022-04-05T06:40:00.000Z">
+<meta property="article:modified_time" content="2022-04-06T12:54:13.478Z">
 <meta property="article:author" content="屈少">
 <meta property="article:tag" content="读书笔记">
 <meta property="article:tag" content="深度学习">
 <meta property="article:tag" content="Tensorflow">
+<meta property="article:tag" content="多元逻辑回归">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://qushao.icu/images/mnist.png">
+<meta name="twitter:image" content="http://qushao.icu/images/iris.png">
 
 
-<link rel="canonical" href="http://qushao.icu/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/">
+<link rel="canonical" href="http://qushao.icu/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://qushao.icu/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/","path":"2022/04/06/Tensorflow2.x深度学习一般步骤/","title":"Tensorflow2.x深度学习使用Sequential一般步骤"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://qushao.icu/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/","path":"2022/04/05/Tensorflow2.x实现多元逻辑回归/","title":"Tensorflow2.x实现多元逻辑回归"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Tensorflow2.x深度学习使用Sequential一般步骤 | 屈少</title>
+<title>Tensorflow2.x实现多元逻辑回归 | 屈少</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WKP2CMZE2V"></script>
   <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"G-WKP2CMZE2V","only_pageview":false}</script>
@@ -156,7 +157,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BD%BF%E7%94%A8sequential%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.</span> <span class="nav-text">Tensorflow2.x深度学习使用Sequential一般步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">实验代码：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">1.2.</span> <span class="nav-text">实验结果：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">实验总结：</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92"><span class="nav-number">1.</span> <span class="nav-text">Tensorflow2.x实现多元逻辑回归</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">实验代码：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">1.2.</span> <span class="nav-text">实验结果：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">实验总结：</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -241,7 +242,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://qushao.icu/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/">
+    <link itemprop="mainEntityOfPage" href="http://qushao.icu/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -254,12 +255,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Tensorflow2.x深度学习使用Sequential一般步骤 | 屈少">
-      <meta itemprop="description" content="使用Tensorflow2.5实现了基本的神经网络的构建，数据集为MNIST（手写数字识别）">
+      <meta itemprop="name" content="Tensorflow2.x实现多元逻辑回归 | 屈少">
+      <meta itemprop="description" content="使用Tensorflow2.5构建了多元逻辑回归模型，数据集为IRIS（鸢尾花）">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Tensorflow2.x深度学习使用Sequential一般步骤
+          Tensorflow2.x实现多元逻辑回归
         </h1>
 
         <div class="post-meta-container">
@@ -269,9 +270,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2022-04-06 14:40:00 / Modified: 14:48:33" itemprop="dateCreated datePublished" datetime="2022-04-06T14:40:00+08:00">2022-04-06</time>
+      <time title="Created: 2022-04-05 14:40:00" itemprop="dateCreated datePublished" datetime="2022-04-05T14:40:00+08:00">2022-04-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-04-06 20:54:13" itemprop="dateModified" datetime="2022-04-06T20:54:13+08:00">2022-04-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -284,7 +291,7 @@
     </span>
 
   
-    <span id="/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/" class="post-meta-item leancloud_visitors" data-flag-title="Tensorflow2.x深度学习使用Sequential一般步骤" title="Views">
+    <span id="/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/" class="post-meta-item leancloud_visitors" data-flag-title="Tensorflow2.x实现多元逻辑回归" title="Views">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -306,8 +313,8 @@
       </span>
       <span class="post-meta-item-text">Changyan: </span>
     
-    <a title="Tensorflow2.x深度学习使用Sequential一般步骤" href="/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/#SOHUCS" itemprop="discussionUrl">
-      <span id="sourceId::fad98ffec2cbac9c0e39facb1e1bafbc" class="cy_cmt_count" itemprop="commentCount"></span>
+    <a title="Tensorflow2.x实现多元逻辑回归" href="/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/#SOHUCS" itemprop="discussionUrl">
+      <span id="sourceId::f5a09bd68621860d6d0bf2a85eae724b" class="cy_cmt_count" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -320,15 +327,15 @@
       </span>
       <span class="post-meta-item-text">Disqus: </span>
     
-    <a title="disqus" href="/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/06/Tensorflow2.x深度学习一般步骤/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/05/Tensorflow2.x实现多元逻辑回归/" itemprop="commentCount"></span>
     </a>
   </span>
   
   
 </div>
 
-            <div class="post-description">使用Tensorflow2.5实现了基本的神经网络的构建，数据集为MNIST（手写数字识别）</div>
+            <div class="post-description">使用Tensorflow2.5构建了多元逻辑回归模型，数据集为IRIS（鸢尾花）</div>
         </div>
       </header>
 
@@ -337,41 +344,27 @@
     
     <div class="post-body" itemprop="articleBody">
         <h3
-id="tensorflow2.x深度学习使用sequential一般步骤">Tensorflow2.x深度学习使用Sequential一般步骤</h3>
+id="tensorflow2.x实现多元逻辑回归">Tensorflow2.x实现多元逻辑回归</h3>
 <hr />
+<p>鸢尾花数据集是经典的机器学习数据集，该数据集包含了鸢尾花的三种分类，即Setosa鸢尾花、Versicolour鸢尾花和Virginica鸢尾花，每一条数据用四个特征（萼长、萼宽、瓣长、瓣宽）来进行描述。</p>
+<p>多元逻辑回归模型的一般过程：</p>
 <ol type="1">
-<li>建立模型</li>
+<li>设置参数</li>
+<li>构建函数</li>
+<li>根据损失函数反向求导</li>
+<li>根据梯度分别更新参数</li>
 </ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model = tf.keras.Sequential()</span><br><span class="line">model.add()</span><br></pre></td></tr></table></figure>
-<ol start="2" type="1">
-<li>查看摘要</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li>配置训练方法</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.<span class="built_in">compile</span>()</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
-<li>训练模型</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.fit()</span><br></pre></td></tr></table></figure>
-<ol start="5" type="1">
-<li>评估模型</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.evaluate()</span><br></pre></td></tr></table></figure>
-<ol start="6" type="1">
-<li>使用模型</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.predict()</span><br></pre></td></tr></table></figure>
 <hr />
 <h4 id="实验代码">实验代码：</h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据集</span></span><br><span class="line">mnist = tf.keras.datasets.mnist</span><br><span class="line">(train_x, train_y), (test_x, test_y) = mnist.load_data()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据预处理</span></span><br><span class="line">X_train = tf.cast(train_x/<span class="number">255.0</span>, tf.float32)</span><br><span class="line">X_test = tf.cast(test_x/<span class="number">255.0</span>, tf.float32)</span><br><span class="line">Y_train = tf.cast(train_y, tf.int16)</span><br><span class="line">Y_test = tf.cast(test_y, tf.int16)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立模型</span></span><br><span class="line">model = tf.keras.Sequential()</span><br><span class="line"><span class="comment"># 输入层，MNIST数据集每张图片大小为28*28，需要先将图片转换为一维张量</span></span><br><span class="line">model.add(tf.keras.layers.Flatten(input_shape=(<span class="number">28</span>, <span class="number">28</span>)))</span><br><span class="line"><span class="comment"># 一层隐藏层，为全连接层，节点个数为128</span></span><br><span class="line">model.add(tf.keras.layers.Dense(<span class="number">128</span>, activation=<span class="string">&quot;relu&quot;</span>))</span><br><span class="line"><span class="comment"># 输出层，MNIST共有10种结果，故节点数为10</span></span><br><span class="line">model.add(tf.keras.layers.Dense(<span class="number">10</span>, activation=<span class="string">&quot;softmax&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看模型</span></span><br><span class="line">model.summary()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置模型</span></span><br><span class="line">model.<span class="built_in">compile</span>(optimizer=<span class="string">&quot;adam&quot;</span>,</span><br><span class="line">              loss=<span class="string">&quot;sparse_categorical_crossentropy&quot;</span>,</span><br><span class="line">              metrics=[<span class="string">&quot;sparse_categorical_accuracy&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">model.fit(X_train, Y_train, batch_size=<span class="number">64</span>, epochs=<span class="number">10</span>, validation_split=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 评估模型</span></span><br><span class="line">model.evaluate(X_test, Y_test, verbose=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存模型</span></span><br><span class="line">model.save(<span class="string">&quot;mnist_model&quot;</span>, save_format=<span class="string">&quot;tf&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用模型</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>):</span><br><span class="line">    index = np.random.randint(<span class="number">0</span>, <span class="number">10000</span>)</span><br><span class="line">    <span class="comment"># 因为在输入层将数据转换为了一维数组，所以预测的时候也需要保证输入和输入层一致</span></span><br><span class="line">    demo = tf.reshape(X_test[index], (<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</span><br><span class="line">    y_pred = np.argmax(model.predict(demo))</span><br><span class="line">    plt.subplot(<span class="number">1</span>, <span class="number">6</span>, i+<span class="number">1</span>)</span><br><span class="line">    plt.axis(<span class="string">&quot;off&quot;</span>)</span><br><span class="line">    plt.imshow(test_x[index], cmap=<span class="string">&quot;gray&quot;</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;y=&quot;</span> + <span class="built_in">str</span>(test_y[index]) + <span class="string">&quot;\ny_pred=&quot;</span> + <span class="built_in">str</span>(y_pred))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载数据集</span></span><br><span class="line">TRAIN_URL = <span class="string">&quot;https://download.tensorflow.org/data/iris_training.csv&quot;</span></span><br><span class="line">train_path = tf.keras.utils.get_file(TRAIN_URL.split(<span class="string">&#x27;/&#x27;</span>)[-<span class="number">1</span>], TRAIN_URL)</span><br><span class="line">TEST_URL = <span class="string">&quot;https://download.tensorflow.org/data/iris_test.csv&quot;</span></span><br><span class="line">test_path = tf.keras.utils.get_file(TEST_URL.split(<span class="string">&#x27;/&#x27;</span>)[-<span class="number">1</span>], TEST_URL)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据集</span></span><br><span class="line">df_iris_train = pd.read_csv(train_path, header=<span class="number">0</span>)</span><br><span class="line">df_iris_test = pd.read_csv(test_path, header=<span class="number">0</span>)</span><br><span class="line">iris_train = np.array(df_iris_train)</span><br><span class="line">iris_test = np.array(df_iris_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对数据集数据进行随机打乱</span></span><br><span class="line">np.random.seed(<span class="number">520</span>)</span><br><span class="line">np.random.shuffle(iris_train)</span><br><span class="line">np.random.shuffle(iris_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将数据的前4列特征作为训练数据，第5列标签提取出来</span></span><br><span class="line">x_train = iris_train[:, <span class="number">0</span>:<span class="number">4</span>]</span><br><span class="line">y_train = iris_train[:, <span class="number">4</span>]</span><br><span class="line">x_test = iris_test[:, <span class="number">0</span>:<span class="number">4</span>]</span><br><span class="line">y_test = iris_test[:, <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据预处理</span></span><br><span class="line">x_train = x_train - np.mean(x_train, axis=<span class="number">0</span>)</span><br><span class="line">x_test = x_test - np.mean(x_test, axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># numpy读取数据默认float64，但在一般情况下，float32在满足精度要求下计算速度更快；对标签进行one-hot编码</span></span><br><span class="line">X_train = tf.cast(x_train, tf.float32)</span><br><span class="line">Y_train = tf.one_hot(tf.constant(y_train, dtype=tf.int32), <span class="number">3</span>)</span><br><span class="line">X_test = tf.cast(x_test, tf.float32)</span><br><span class="line">Y_test = tf.one_hot(tf.constant(y_test, dtype=tf.int32), <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置超参数</span></span><br><span class="line">learn_rate = <span class="number">0.5</span></span><br><span class="line"><span class="built_in">iter</span> = <span class="number">100</span></span><br><span class="line">display_step = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置训练参数，构建模型</span></span><br><span class="line">W1 = tf.Variable(np.random.randn(<span class="number">4</span>, <span class="number">32</span>), dtype=tf.float32)</span><br><span class="line">B1 = tf.Variable(np.zeros([<span class="number">32</span>]), dtype=tf.float32)</span><br><span class="line">W2 = tf.Variable(np.random.randn(<span class="number">32</span>, <span class="number">16</span>), dtype=tf.float32)</span><br><span class="line">B2 = tf.Variable(np.zeros([<span class="number">16</span>]), dtype=tf.float32)</span><br><span class="line">W3 = tf.Variable(np.random.randn(<span class="number">16</span>, <span class="number">3</span>), dtype=tf.float32)</span><br><span class="line">B3 = tf.Variable(np.zeros([<span class="number">3</span>]), dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">acc_train = []</span><br><span class="line">acc_test = []</span><br><span class="line">cce_train = []</span><br><span class="line">cce_test = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">iter</span> + <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        Hidden1_train = tf.nn.relu(tf.matmul(X_train, W1) + B1)</span><br><span class="line">        Hidden2_train = tf.nn.relu(tf.matmul(Hidden1_train, W2) + B2)</span><br><span class="line">        PRED_train = tf.nn.softmax(tf.matmul(Hidden2_train, W3) + B3)</span><br><span class="line">        Loss_train = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y_true=Y_train, y_pred=PRED_train))</span><br><span class="line">    Hidden1_test = tf.nn.relu(tf.matmul(X_test, W1) + B1)</span><br><span class="line">    Hidden2_test = tf.nn.relu(tf.matmul(Hidden1_test, W2) + B2)</span><br><span class="line">    PRED_test = tf.nn.softmax(tf.matmul(Hidden2_test, W3) + B3)</span><br><span class="line">    Loss_test = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y_true=Y_test, y_pred=PRED_test))</span><br><span class="line"></span><br><span class="line">    accuracy_train = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(PRED_train.numpy(), axis=<span class="number">1</span>), y_train), tf.float32))</span><br><span class="line">    accuracy_test = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(PRED_test.numpy(), axis=<span class="number">1</span>), y_test), tf.float32))</span><br><span class="line">    acc_train.append(accuracy_train)</span><br><span class="line">    acc_test.append(accuracy_test)</span><br><span class="line">    cce_train.append(Loss_train)</span><br><span class="line">    cce_test.append(Loss_test)</span><br><span class="line"></span><br><span class="line">    grads = tape.gradient(Loss_train, [W1, B1, W2, B2, W3, B3])</span><br><span class="line">    W1.assign_sub(learn_rate * grads[<span class="number">0</span>])</span><br><span class="line">    B1.assign_sub(learn_rate * grads[<span class="number">1</span>])</span><br><span class="line">    W2.assign_sub(learn_rate * grads[<span class="number">2</span>])</span><br><span class="line">    B2.assign_sub(learn_rate * grads[<span class="number">3</span>])</span><br><span class="line">    W3.assign_sub(learn_rate * grads[<span class="number">4</span>])</span><br><span class="line">    B3.assign_sub(learn_rate * grads[<span class="number">5</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> i % display_step == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;i: %i, TrainAcc: %f, TrainLoss: %f, TestAcc: %f, TestLoss: %f&quot;</span> % (i, accuracy_train, Loss_train, accuracy_test, Loss_test))</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">20</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">121</span>)</span><br><span class="line">plt.plot(cce_train, color=<span class="string">&quot;blue&quot;</span>, label=<span class="string">&quot;train&quot;</span>)</span><br><span class="line">plt.plot(cce_test, color=<span class="string">&quot;red&quot;</span>, label=<span class="string">&quot;test&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;Iteration&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Loss&quot;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">122</span>)</span><br><span class="line">plt.plot(acc_train, color=<span class="string">&quot;blue&quot;</span>, label=<span class="string">&quot;train&quot;</span>)</span><br><span class="line">plt.plot(acc_test, color=<span class="string">&quot;red&quot;</span>, label=<span class="string">&quot;test&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;Iteration&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Accuracy&quot;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 <hr />
 <h4 id="实验结果">实验结果：</h4>
-<p><img data-src="/images/mnist.png" /></p>
+<p><img data-src="/images/iris.png" /></p>
 <hr />
 <h4 id="实验总结">实验总结：</h4>
-<p>其实对于一般的神经网络，构建的方法都很类似，它们主要的不同体现在对各种参数（比如优化器、激活函数、评价指标、损失函数）的选择以及隐藏层的数量、每一层的神经元个数上。我们需要注意的是虽然使用tf.keras.Sequential()构建神经网络只需要关注输入层和输出层的结构（隐藏层会自动根据上下层的结构生成对应的训练参数结构），但是必须保证使用模型预测时数据集的处理和模型一致（这也是本次实验中容易出错的地方）。</p>
+<p>多元逻辑回归就是找到一条曲线（曲面）去划分多分类，整体相当于对于f=Wx
++
+B求得损失函数最小的参数，其中x和b是维度相同的一维向量，其大小代表了数据的维度。实验的主要工作在于应用tensorflow2.5的api构建函数以及对参数的求导（偏导），我们使用tf.matmul()构建函数，使用tf.GradientTape()进行自动求导，使用tensorflow的一大优势就在于我们不用关系损失函数复杂的链式求导过程，而可以将重心放在损失函数的设计以及其他参数的选择上。</p>
 
     </div>
 
@@ -413,17 +406,21 @@ id="tensorflow2.x深度学习使用sequential一般步骤">Tensorflow2.x深度�
               <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 读书笔记</a>
               <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"><i class="fa fa-tag"></i> 深度学习</a>
               <a href="/tags/Tensorflow/" rel="tag"><i class="fa fa-tag"></i> Tensorflow</a>
+              <a href="/tags/%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/" rel="tag"><i class="fa fa-tag"></i> 多元逻辑回归</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/" rel="prev" title="Tensorflow2.x实现多元逻辑回归">
-                  <i class="fa fa-chevron-left"></i> Tensorflow2.x实现多元逻辑回归
+                <a href="/2022/04/01/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0/" rel="prev" title="深度学习之激活函数">
+                  <i class="fa fa-chevron-left"></i> 深度学习之激活函数
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/" rel="next" title="Tensorflow2.x深度学习使用Sequential一般步骤">
+                  Tensorflow2.x深度学习使用Sequential一般步骤 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -443,7 +440,7 @@ id="tensorflow2.x深度学习使用sequential一般步骤">Tensorflow2.x深度�
         </ul>
         <div class="tab-content">
             <div class="tab-pane changyan" id="comment-changyan">
-              <div class="comments" id="SOHUCS" sid="fad98ffec2cbac9c0e39facb1e1bafbc"></div>
+              <div class="comments" id="SOHUCS" sid="f5a09bd68621860d6d0bf2a85eae724b"></div>
             </div>
             <div class="tab-pane disqus" id="comment-disqus">
               
@@ -527,7 +524,7 @@ id="tensorflow2.x深度学习使用sequential一般步骤">Tensorflow2.x深度�
 
 
   <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://qushao.icu/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":true,"archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://qushao.icu/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/"}</script>
   <script src="/js/third-party/quicklink.js"></script>
 <script class="next-config" data-name="changyan" type="application/json">{"enable":true,"appid":"cyw0fr0eC","appkey":"647f57b2988dfca28bf31b925114005b"}</script>
 <script src="/js/third-party/comments/changyan.js"></script>
