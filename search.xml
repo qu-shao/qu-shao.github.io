@@ -44,91 +44,6 @@ id="第五种方式通过map.values遍历所有的value但是不能遍历键key"
       </tags>
   </entry>
   <entry>
-    <title>Tensorflow2.x实现多元逻辑回归</title>
-    <url>/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/</url>
-    <content><![CDATA[<h3
-id="tensorflow2.x实现多元逻辑回归">Tensorflow2.x实现多元逻辑回归</h3>
-<hr />
-<p>鸢尾花数据集是经典的机器学习数据集，该数据集包含了鸢尾花的三种分类，即Setosa鸢尾花、Versicolour鸢尾花和Virginica鸢尾花，每一条数据用四个特征（萼长、萼宽、瓣长、瓣宽）来进行描述。</p>
-<p>多元逻辑回归模型的一般过程：</p>
-<ol type="1">
-<li>设置参数</li>
-<li>构建函数</li>
-<li>根据损失函数反向求导</li>
-<li>根据梯度分别更新参数</li>
-</ol>
-<hr />
-<h4 id="实验代码">实验代码：</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载数据集</span></span><br><span class="line">TRAIN_URL = <span class="string">&quot;https://download.tensorflow.org/data/iris_training.csv&quot;</span></span><br><span class="line">train_path = tf.keras.utils.get_file(TRAIN_URL.split(<span class="string">&#x27;/&#x27;</span>)[-<span class="number">1</span>], TRAIN_URL)</span><br><span class="line">TEST_URL = <span class="string">&quot;https://download.tensorflow.org/data/iris_test.csv&quot;</span></span><br><span class="line">test_path = tf.keras.utils.get_file(TEST_URL.split(<span class="string">&#x27;/&#x27;</span>)[-<span class="number">1</span>], TEST_URL)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据集</span></span><br><span class="line">df_iris_train = pd.read_csv(train_path, header=<span class="number">0</span>)</span><br><span class="line">df_iris_test = pd.read_csv(test_path, header=<span class="number">0</span>)</span><br><span class="line">iris_train = np.array(df_iris_train)</span><br><span class="line">iris_test = np.array(df_iris_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对数据集数据进行随机打乱</span></span><br><span class="line">np.random.seed(<span class="number">520</span>)</span><br><span class="line">np.random.shuffle(iris_train)</span><br><span class="line">np.random.shuffle(iris_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将数据的前4列特征作为训练数据，第5列标签提取出来</span></span><br><span class="line">x_train = iris_train[:, <span class="number">0</span>:<span class="number">4</span>]</span><br><span class="line">y_train = iris_train[:, <span class="number">4</span>]</span><br><span class="line">x_test = iris_test[:, <span class="number">0</span>:<span class="number">4</span>]</span><br><span class="line">y_test = iris_test[:, <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据预处理</span></span><br><span class="line">x_train = x_train - np.mean(x_train, axis=<span class="number">0</span>)</span><br><span class="line">x_test = x_test - np.mean(x_test, axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># numpy读取数据默认float64，但在一般情况下，float32在满足精度要求下计算速度更快；对标签进行one-hot编码</span></span><br><span class="line">X_train = tf.cast(x_train, tf.float32)</span><br><span class="line">Y_train = tf.one_hot(tf.constant(y_train, dtype=tf.int32), <span class="number">3</span>)</span><br><span class="line">X_test = tf.cast(x_test, tf.float32)</span><br><span class="line">Y_test = tf.one_hot(tf.constant(y_test, dtype=tf.int32), <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置超参数</span></span><br><span class="line">learn_rate = <span class="number">0.5</span></span><br><span class="line"><span class="built_in">iter</span> = <span class="number">100</span></span><br><span class="line">display_step = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置训练参数，构建模型</span></span><br><span class="line">W1 = tf.Variable(np.random.randn(<span class="number">4</span>, <span class="number">32</span>), dtype=tf.float32)</span><br><span class="line">B1 = tf.Variable(np.zeros([<span class="number">32</span>]), dtype=tf.float32)</span><br><span class="line">W2 = tf.Variable(np.random.randn(<span class="number">32</span>, <span class="number">16</span>), dtype=tf.float32)</span><br><span class="line">B2 = tf.Variable(np.zeros([<span class="number">16</span>]), dtype=tf.float32)</span><br><span class="line">W3 = tf.Variable(np.random.randn(<span class="number">16</span>, <span class="number">3</span>), dtype=tf.float32)</span><br><span class="line">B3 = tf.Variable(np.zeros([<span class="number">3</span>]), dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">acc_train = []</span><br><span class="line">acc_test = []</span><br><span class="line">cce_train = []</span><br><span class="line">cce_test = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">iter</span> + <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        Hidden1_train = tf.nn.relu(tf.matmul(X_train, W1) + B1)</span><br><span class="line">        Hidden2_train = tf.nn.relu(tf.matmul(Hidden1_train, W2) + B2)</span><br><span class="line">        PRED_train = tf.nn.softmax(tf.matmul(Hidden2_train, W3) + B3)</span><br><span class="line">        Loss_train = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y_true=Y_train, y_pred=PRED_train))</span><br><span class="line">    Hidden1_test = tf.nn.relu(tf.matmul(X_test, W1) + B1)</span><br><span class="line">    Hidden2_test = tf.nn.relu(tf.matmul(Hidden1_test, W2) + B2)</span><br><span class="line">    PRED_test = tf.nn.softmax(tf.matmul(Hidden2_test, W3) + B3)</span><br><span class="line">    Loss_test = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y_true=Y_test, y_pred=PRED_test))</span><br><span class="line"></span><br><span class="line">    accuracy_train = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(PRED_train.numpy(), axis=<span class="number">1</span>), y_train), tf.float32))</span><br><span class="line">    accuracy_test = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(PRED_test.numpy(), axis=<span class="number">1</span>), y_test), tf.float32))</span><br><span class="line">    acc_train.append(accuracy_train)</span><br><span class="line">    acc_test.append(accuracy_test)</span><br><span class="line">    cce_train.append(Loss_train)</span><br><span class="line">    cce_test.append(Loss_test)</span><br><span class="line"></span><br><span class="line">    grads = tape.gradient(Loss_train, [W1, B1, W2, B2, W3, B3])</span><br><span class="line">    W1.assign_sub(learn_rate * grads[<span class="number">0</span>])</span><br><span class="line">    B1.assign_sub(learn_rate * grads[<span class="number">1</span>])</span><br><span class="line">    W2.assign_sub(learn_rate * grads[<span class="number">2</span>])</span><br><span class="line">    B2.assign_sub(learn_rate * grads[<span class="number">3</span>])</span><br><span class="line">    W3.assign_sub(learn_rate * grads[<span class="number">4</span>])</span><br><span class="line">    B3.assign_sub(learn_rate * grads[<span class="number">5</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> i % display_step == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;i: %i, TrainAcc: %f, TrainLoss: %f, TestAcc: %f, TestLoss: %f&quot;</span> % (i, accuracy_train, Loss_train, accuracy_test, Loss_test))</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">20</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">121</span>)</span><br><span class="line">plt.plot(cce_train, color=<span class="string">&quot;blue&quot;</span>, label=<span class="string">&quot;train&quot;</span>)</span><br><span class="line">plt.plot(cce_test, color=<span class="string">&quot;red&quot;</span>, label=<span class="string">&quot;test&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;Iteration&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Loss&quot;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">122</span>)</span><br><span class="line">plt.plot(acc_train, color=<span class="string">&quot;blue&quot;</span>, label=<span class="string">&quot;train&quot;</span>)</span><br><span class="line">plt.plot(acc_test, color=<span class="string">&quot;red&quot;</span>, label=<span class="string">&quot;test&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;Iteration&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Accuracy&quot;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<hr />
-<h4 id="实验结果">实验结果：</h4>
-<p><img data-src="/images/iris.png" /></p>
-<hr />
-<h4 id="实验总结">实验总结：</h4>
-<p>多元逻辑回归就是找到一条曲线（曲面）去划分多分类，整体相当于对于f=Wx
-+
-B求得损失函数最小的参数，其中x和b是维度相同的一维向量，其大小代表了数据的维度。实验的主要工作在于应用tensorflow2.5的api构建函数以及对参数的求导（偏导），我们使用tf.matmul()构建函数，使用tf.GradientTape()进行自动求导，使用tensorflow的一大优势就在于我们不用关系损失函数复杂的链式求导过程，而可以将重心放在损失函数的设计以及其他参数的选择上。</p>
-]]></content>
-      <categories>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>读书笔记</tag>
-        <tag>深度学习</tag>
-        <tag>Tensorflow</tag>
-        <tag>多元逻辑回归</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Tensorflow2.x深度学习使用Sequential一般步骤</title>
-    <url>/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/</url>
-    <content><![CDATA[<h3
-id="tensorflow2.x深度学习使用sequential一般步骤">Tensorflow2.x深度学习使用Sequential一般步骤</h3>
-<hr />
-<ol type="1">
-<li>建立模型</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = tf.keras.Sequential()</span><br><span class="line">model.add()</span><br></pre></td></tr></table></figure>
-<ol start="2" type="1">
-<li>查看摘要</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
-<ol start="3" type="1">
-<li>配置训练方法</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.<span class="built_in">compile</span>()</span><br></pre></td></tr></table></figure>
-<ol start="4" type="1">
-<li>训练模型</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.fit()</span><br></pre></td></tr></table></figure>
-<ol start="5" type="1">
-<li>评估模型</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.evaluate()</span><br></pre></td></tr></table></figure>
-<ol start="6" type="1">
-<li>使用模型</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.predict()</span><br></pre></td></tr></table></figure>
-<hr />
-<h4 id="实验代码">实验代码：</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据集</span></span><br><span class="line">mnist = tf.keras.datasets.mnist</span><br><span class="line">(train_x, train_y), (test_x, test_y) = mnist.load_data()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据预处理</span></span><br><span class="line">X_train = tf.cast(train_x/<span class="number">255.0</span>, tf.float32)</span><br><span class="line">X_test = tf.cast(test_x/<span class="number">255.0</span>, tf.float32)</span><br><span class="line">Y_train = tf.cast(train_y, tf.int16)</span><br><span class="line">Y_test = tf.cast(test_y, tf.int16)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立模型</span></span><br><span class="line">model = tf.keras.Sequential()</span><br><span class="line"><span class="comment"># 输入层，MNIST数据集每张图片大小为28*28，需要先将图片转换为一维张量</span></span><br><span class="line">model.add(tf.keras.layers.Flatten(input_shape=(<span class="number">28</span>, <span class="number">28</span>)))</span><br><span class="line"><span class="comment"># 一层隐藏层，为全连接层，节点个数为128</span></span><br><span class="line">model.add(tf.keras.layers.Dense(<span class="number">128</span>, activation=<span class="string">&quot;relu&quot;</span>))</span><br><span class="line"><span class="comment"># 输出层，MNIST共有10种结果，故节点数为10</span></span><br><span class="line">model.add(tf.keras.layers.Dense(<span class="number">10</span>, activation=<span class="string">&quot;softmax&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看模型</span></span><br><span class="line">model.summary()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置模型</span></span><br><span class="line">model.<span class="built_in">compile</span>(optimizer=<span class="string">&quot;adam&quot;</span>,</span><br><span class="line">              loss=<span class="string">&quot;sparse_categorical_crossentropy&quot;</span>,</span><br><span class="line">              metrics=[<span class="string">&quot;sparse_categorical_accuracy&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">model.fit(X_train, Y_train, batch_size=<span class="number">64</span>, epochs=<span class="number">10</span>, validation_split=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 评估模型</span></span><br><span class="line">model.evaluate(X_test, Y_test, verbose=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存模型</span></span><br><span class="line">model.save(<span class="string">&quot;mnist_model&quot;</span>, save_format=<span class="string">&quot;tf&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用模型</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>):</span><br><span class="line">    index = np.random.randint(<span class="number">0</span>, <span class="number">10000</span>)</span><br><span class="line">    <span class="comment"># 因为在输入层将数据转换为了一维数组，所以预测的时候也需要保证输入和输入层一致</span></span><br><span class="line">    demo = tf.reshape(X_test[index], (<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</span><br><span class="line">    y_pred = np.argmax(model.predict(demo))</span><br><span class="line">    plt.subplot(<span class="number">1</span>, <span class="number">6</span>, i+<span class="number">1</span>)</span><br><span class="line">    plt.axis(<span class="string">&quot;off&quot;</span>)</span><br><span class="line">    plt.imshow(test_x[index], cmap=<span class="string">&quot;gray&quot;</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;y=&quot;</span> + <span class="built_in">str</span>(test_y[index]) + <span class="string">&quot;\ny_pred=&quot;</span> + <span class="built_in">str</span>(y_pred))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<hr />
-<h4 id="实验结果">实验结果：</h4>
-<p><img data-src="/images/mnist.png" /></p>
-<hr />
-<h4 id="实验总结">实验总结：</h4>
-<p>其实对于一般的神经网络，构建的方法都很类似，它们主要的不同体现在对各种参数（比如优化器、激活函数、评价指标、损失函数）的选择以及隐藏层的数量、每一层的神经元个数上。我们需要注意的是虽然使用tf.keras.Sequential()构建神经网络只需要关注输入层和输出层的结构（隐藏层会自动根据上下层的结构生成对应的训练参数结构），但是必须保证使用模型预测时数据集的处理和模型一致（这也是本次实验中容易出错的地方）。</p>
-]]></content>
-      <categories>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>读书笔记</tag>
-        <tag>深度学习</tag>
-        <tag>Tensorflow</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java核心技术·卷Ⅰ读书笔记</title>
     <url>/2021/12/07/Java%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="java核心技术卷ⅰ读书笔记">Java核心技术·卷Ⅰ读书笔记</h2>
@@ -397,63 +312,52 @@ you can ask me on <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hleG9
 ]]></content>
   </entry>
   <entry>
-    <title>语录</title>
-    <url>/2021/12/07/%E8%AF%AD%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="语录">语录</h2>
-<p><img data-src="/images/sentence_top_img.jpg" /></p>
-<p>​
-也许吧，因为人要接受事与愿违啊。我们太有限了，我们只能做我们觉得是对的事情，然后接受，它的事与愿违。因为人生所有东西，它都是有负斜率的。在跑的时候，可能慢慢的负斜率，使得偏离了最初的目标，这是人的有限性。所以这就是为什么不要对自己所投入的事情、所看中的事情，抱有不加边际的幻想和热情。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  苏格拉底说过：“对于你懂的东西，你才会真正地认同。对于你不懂的东西，你不可能真正地认同。”</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人最大的痛苦就是在于无法跨越知道和做到的那个鸿沟。笛卡尔说：“我思故我在”，这个很对，但是，“我思故我在”
-会经常让我们沉浸于一种幻想之中，就是我们只要思考到了，我们就能做到。但其实不是这样。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人片刻的感动，不可能持久的感动。很多人所谓的被你影响，只是片刻的感动了，最终还是投入到自己以前的生活。片刻的感动，在很多时候是一种自我欺骗。你在欺骗自己，你也在欺骗别人，你也让别人陷入到一种自我欺骗。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  我们画不出一个完美的圆，但完美的圆是存在的。虽不能至，心向往之。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人都是会犯错误的，所以就是永远要接受我们所有的看法都是在偏见之中。我们的一生都是像苏格拉底所说的，走出那个偏见的洞穴。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  人这一生自己能决定的也许只有 5%，有 95%
-是你决定不了的，你的努力也许只是那 5% 的一个支点，撬动了那 95%
-的命运。但是你不要把所有的功劳归给你自己，你飞得越高，你要注意有根线是拉着你的，像气球一样，如果你说我太厉害了，我没有必要受这个线的约束，最后你会爆炸的。因此你要感恩你生命中所拥有的一切。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  奥古斯丁在《忏悔录》中说过这样一段话：“当你问我时间是什么，如果你不问我，我感觉自己还知道，你一旦问我，我就茫然无知了。”
-昨天的已经成为过去，明天的还没有到来，所以今天是一个礼物，大家把今天当作一个礼物，去珍惜享受你现在拥有的平凡的幸福。因为这种幸福现在你觉得平凡，但到你失去那一天，你会觉得它是如此的珍贵。</p>
-<p align="right">
-—— 罗翔
-</p>
-<p>  世界即不黑也不白，而是一道精致的灰。（The world is not black or
-white, but a delicious shade of grey.）</p>
-<p align="right">
-—— 英雄联盟卡密尔台词
-</p>
-<p>  人在少年的时候，大多会经历一场情不知所起一往而深的感情，或者是因为他成绩好，或者是他擅长打篮球，或者是言行有趣，或者是长得好看。总之就是某个不经意的刹那，怦然心动。但大多数时候，它来得突然，却也无疾而终，在某年某月，等你再回首的时候，想起自己曾经的一往情深，不免哑然失笑。那些曾经我们看来很美好的事物，也会随着时间的流逝，而变得无关紧要。对于很多人来说终其一生会遇到很多人，但可能要倾尽所有的运气，才会遇见到特别的那一个。</p>
-<p align="right">
-——b 站 up 主阿斗归来了讲解电影《怦然心动》
-</p>
+    <title>Tensorflow2.x深度学习使用Sequential一般步骤</title>
+    <url>/2022/04/06/Tensorflow2.x%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%80%E8%88%AC%E6%AD%A5%E9%AA%A4/</url>
+    <content><![CDATA[<h3
+id="tensorflow2.x深度学习使用sequential一般步骤">Tensorflow2.x深度学习使用Sequential一般步骤</h3>
+<hr />
+<ol type="1">
+<li>建立模型</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = tf.keras.Sequential()</span><br><span class="line">model.add()</span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>查看摘要</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>配置训练方法</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.<span class="built_in">compile</span>()</span><br></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li>训练模型</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.fit()</span><br></pre></td></tr></table></figure>
+<ol start="5" type="1">
+<li>评估模型</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.evaluate()</span><br></pre></td></tr></table></figure>
+<ol start="6" type="1">
+<li>使用模型</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.predict()</span><br></pre></td></tr></table></figure>
+<hr />
+<h4 id="实验代码">实验代码：</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据集</span></span><br><span class="line">mnist = tf.keras.datasets.mnist</span><br><span class="line">(train_x, train_y), (test_x, test_y) = mnist.load_data()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据预处理</span></span><br><span class="line">X_train = tf.cast(train_x/<span class="number">255.0</span>, tf.float32)</span><br><span class="line">X_test = tf.cast(test_x/<span class="number">255.0</span>, tf.float32)</span><br><span class="line">Y_train = tf.cast(train_y, tf.int16)</span><br><span class="line">Y_test = tf.cast(test_y, tf.int16)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立模型</span></span><br><span class="line">model = tf.keras.Sequential()</span><br><span class="line"><span class="comment"># 输入层，MNIST数据集每张图片大小为28*28，需要先将图片转换为一维张量</span></span><br><span class="line">model.add(tf.keras.layers.Flatten(input_shape=(<span class="number">28</span>, <span class="number">28</span>)))</span><br><span class="line"><span class="comment"># 一层隐藏层，为全连接层，节点个数为128</span></span><br><span class="line">model.add(tf.keras.layers.Dense(<span class="number">128</span>, activation=<span class="string">&quot;relu&quot;</span>))</span><br><span class="line"><span class="comment"># 输出层，MNIST共有10种结果，故节点数为10</span></span><br><span class="line">model.add(tf.keras.layers.Dense(<span class="number">10</span>, activation=<span class="string">&quot;softmax&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看模型</span></span><br><span class="line">model.summary()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置模型</span></span><br><span class="line">model.<span class="built_in">compile</span>(optimizer=<span class="string">&quot;adam&quot;</span>,</span><br><span class="line">              loss=<span class="string">&quot;sparse_categorical_crossentropy&quot;</span>,</span><br><span class="line">              metrics=[<span class="string">&quot;sparse_categorical_accuracy&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">model.fit(X_train, Y_train, batch_size=<span class="number">64</span>, epochs=<span class="number">10</span>, validation_split=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 评估模型</span></span><br><span class="line">model.evaluate(X_test, Y_test, verbose=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存模型</span></span><br><span class="line">model.save(<span class="string">&quot;mnist_model&quot;</span>, save_format=<span class="string">&quot;tf&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用模型</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>):</span><br><span class="line">    index = np.random.randint(<span class="number">0</span>, <span class="number">10000</span>)</span><br><span class="line">    <span class="comment"># 因为在输入层将数据转换为了一维数组，所以预测的时候也需要保证输入和输入层一致</span></span><br><span class="line">    demo = tf.reshape(X_test[index], (<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</span><br><span class="line">    y_pred = np.argmax(model.predict(demo))</span><br><span class="line">    plt.subplot(<span class="number">1</span>, <span class="number">6</span>, i+<span class="number">1</span>)</span><br><span class="line">    plt.axis(<span class="string">&quot;off&quot;</span>)</span><br><span class="line">    plt.imshow(test_x[index], cmap=<span class="string">&quot;gray&quot;</span>)</span><br><span class="line">    plt.title(<span class="string">&quot;y=&quot;</span> + <span class="built_in">str</span>(test_y[index]) + <span class="string">&quot;\ny_pred=&quot;</span> + <span class="built_in">str</span>(y_pred))</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<hr />
+<h4 id="实验结果">实验结果：</h4>
+<p><img data-src="/images/mnist.png" /></p>
+<hr />
+<h4 id="实验总结">实验总结：</h4>
+<p>其实对于一般的神经网络，构建的方法都很类似，它们主要的不同体现在对各种参数（比如优化器、激活函数、评价指标、损失函数）的选择以及隐藏层的数量、每一层的神经元个数上。我们需要注意的是虽然使用tf.keras.Sequential()构建神经网络只需要关注输入层和输出层的结构（隐藏层会自动根据上下层的结构生成对应的训练参数结构），但是必须保证使用模型预测时数据集的处理和模型一致（这也是本次实验中容易出错的地方）。</p>
 ]]></content>
       <categories>
-        <category>其他</category>
+        <category>深度学习</category>
       </categories>
       <tags>
-        <tag>读书</tag>
-        <tag>语录</tag>
+        <tag>读书笔记</tag>
+        <tag>深度学习</tag>
+        <tag>Tensorflow</tag>
       </tags>
   </entry>
   <entry>
@@ -529,6 +433,102 @@ ELU函数融合了Sigmoid和ReLU，左侧具有软饱和性，右侧无饱和性
       <tags>
         <tag>读书笔记</tag>
         <tag>深度学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>语录</title>
+    <url>/2021/12/07/%E8%AF%AD%E5%BD%95/</url>
+    <content><![CDATA[<h2 id="语录">语录</h2>
+<p><img data-src="/images/sentence_top_img.jpg" /></p>
+<p>​
+也许吧，因为人要接受事与愿违啊。我们太有限了，我们只能做我们觉得是对的事情，然后接受，它的事与愿违。因为人生所有东西，它都是有负斜率的。在跑的时候，可能慢慢的负斜率，使得偏离了最初的目标，这是人的有限性。所以这就是为什么不要对自己所投入的事情、所看中的事情，抱有不加边际的幻想和热情。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  苏格拉底说过：“对于你懂的东西，你才会真正地认同。对于你不懂的东西，你不可能真正地认同。”</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人最大的痛苦就是在于无法跨越知道和做到的那个鸿沟。笛卡尔说：“我思故我在”，这个很对，但是，“我思故我在”
+会经常让我们沉浸于一种幻想之中，就是我们只要思考到了，我们就能做到。但其实不是这样。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人片刻的感动，不可能持久的感动。很多人所谓的被你影响，只是片刻的感动了，最终还是投入到自己以前的生活。片刻的感动，在很多时候是一种自我欺骗。你在欺骗自己，你也在欺骗别人，你也让别人陷入到一种自我欺骗。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  我们画不出一个完美的圆，但完美的圆是存在的。虽不能至，心向往之。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人都是会犯错误的，所以就是永远要接受我们所有的看法都是在偏见之中。我们的一生都是像苏格拉底所说的，走出那个偏见的洞穴。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  人这一生自己能决定的也许只有 5%，有 95%
+是你决定不了的，你的努力也许只是那 5% 的一个支点，撬动了那 95%
+的命运。但是你不要把所有的功劳归给你自己，你飞得越高，你要注意有根线是拉着你的，像气球一样，如果你说我太厉害了，我没有必要受这个线的约束，最后你会爆炸的。因此你要感恩你生命中所拥有的一切。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  奥古斯丁在《忏悔录》中说过这样一段话：“当你问我时间是什么，如果你不问我，我感觉自己还知道，你一旦问我，我就茫然无知了。”
+昨天的已经成为过去，明天的还没有到来，所以今天是一个礼物，大家把今天当作一个礼物，去珍惜享受你现在拥有的平凡的幸福。因为这种幸福现在你觉得平凡，但到你失去那一天，你会觉得它是如此的珍贵。</p>
+<p align="right">
+—— 罗翔
+</p>
+<p>  世界即不黑也不白，而是一道精致的灰。（The world is not black or
+white, but a delicious shade of grey.）</p>
+<p align="right">
+—— 英雄联盟卡密尔台词
+</p>
+<p>  人在少年的时候，大多会经历一场情不知所起一往而深的感情，或者是因为他成绩好，或者是他擅长打篮球，或者是言行有趣，或者是长得好看。总之就是某个不经意的刹那，怦然心动。但大多数时候，它来得突然，却也无疾而终，在某年某月，等你再回首的时候，想起自己曾经的一往情深，不免哑然失笑。那些曾经我们看来很美好的事物，也会随着时间的流逝，而变得无关紧要。对于很多人来说终其一生会遇到很多人，但可能要倾尽所有的运气，才会遇见到特别的那一个。</p>
+<p align="right">
+——b 站 up 主阿斗归来了讲解电影《怦然心动》
+</p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>读书</tag>
+        <tag>语录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Tensorflow2.x实现多元逻辑回归</title>
+    <url>/2022/04/05/Tensorflow2.x%E5%AE%9E%E7%8E%B0%E5%A4%9A%E5%85%83%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/</url>
+    <content><![CDATA[<h3
+id="tensorflow2.x实现多元逻辑回归">Tensorflow2.x实现多元逻辑回归</h3>
+<hr />
+<p>鸢尾花数据集是经典的机器学习数据集，该数据集包含了鸢尾花的三种分类，即Setosa鸢尾花、Versicolour鸢尾花和Virginica鸢尾花，每一条数据用四个特征（萼长、萼宽、瓣长、瓣宽）来进行描述。</p>
+<p>多元逻辑回归模型的一般过程：</p>
+<ol type="1">
+<li>设置参数</li>
+<li>构建函数</li>
+<li>根据损失函数反向求导</li>
+<li>根据梯度分别更新参数</li>
+</ol>
+<hr />
+<h4 id="实验代码">实验代码：</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载数据集</span></span><br><span class="line">TRAIN_URL = <span class="string">&quot;https://download.tensorflow.org/data/iris_training.csv&quot;</span></span><br><span class="line">train_path = tf.keras.utils.get_file(TRAIN_URL.split(<span class="string">&#x27;/&#x27;</span>)[-<span class="number">1</span>], TRAIN_URL)</span><br><span class="line">TEST_URL = <span class="string">&quot;https://download.tensorflow.org/data/iris_test.csv&quot;</span></span><br><span class="line">test_path = tf.keras.utils.get_file(TEST_URL.split(<span class="string">&#x27;/&#x27;</span>)[-<span class="number">1</span>], TEST_URL)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据集</span></span><br><span class="line">df_iris_train = pd.read_csv(train_path, header=<span class="number">0</span>)</span><br><span class="line">df_iris_test = pd.read_csv(test_path, header=<span class="number">0</span>)</span><br><span class="line">iris_train = np.array(df_iris_train)</span><br><span class="line">iris_test = np.array(df_iris_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对数据集数据进行随机打乱</span></span><br><span class="line">np.random.seed(<span class="number">520</span>)</span><br><span class="line">np.random.shuffle(iris_train)</span><br><span class="line">np.random.shuffle(iris_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将数据的前4列特征作为训练数据，第5列标签提取出来</span></span><br><span class="line">x_train = iris_train[:, <span class="number">0</span>:<span class="number">4</span>]</span><br><span class="line">y_train = iris_train[:, <span class="number">4</span>]</span><br><span class="line">x_test = iris_test[:, <span class="number">0</span>:<span class="number">4</span>]</span><br><span class="line">y_test = iris_test[:, <span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据预处理</span></span><br><span class="line">x_train = x_train - np.mean(x_train, axis=<span class="number">0</span>)</span><br><span class="line">x_test = x_test - np.mean(x_test, axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># numpy读取数据默认float64，但在一般情况下，float32在满足精度要求下计算速度更快；对标签进行one-hot编码</span></span><br><span class="line">X_train = tf.cast(x_train, tf.float32)</span><br><span class="line">Y_train = tf.one_hot(tf.constant(y_train, dtype=tf.int32), <span class="number">3</span>)</span><br><span class="line">X_test = tf.cast(x_test, tf.float32)</span><br><span class="line">Y_test = tf.one_hot(tf.constant(y_test, dtype=tf.int32), <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置超参数</span></span><br><span class="line">learn_rate = <span class="number">0.5</span></span><br><span class="line"><span class="built_in">iter</span> = <span class="number">100</span></span><br><span class="line">display_step = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置训练参数，构建模型</span></span><br><span class="line">W1 = tf.Variable(np.random.randn(<span class="number">4</span>, <span class="number">32</span>), dtype=tf.float32)</span><br><span class="line">B1 = tf.Variable(np.zeros([<span class="number">32</span>]), dtype=tf.float32)</span><br><span class="line">W2 = tf.Variable(np.random.randn(<span class="number">32</span>, <span class="number">16</span>), dtype=tf.float32)</span><br><span class="line">B2 = tf.Variable(np.zeros([<span class="number">16</span>]), dtype=tf.float32)</span><br><span class="line">W3 = tf.Variable(np.random.randn(<span class="number">16</span>, <span class="number">3</span>), dtype=tf.float32)</span><br><span class="line">B3 = tf.Variable(np.zeros([<span class="number">3</span>]), dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">acc_train = []</span><br><span class="line">acc_test = []</span><br><span class="line">cce_train = []</span><br><span class="line">cce_test = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">iter</span> + <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        Hidden1_train = tf.nn.relu(tf.matmul(X_train, W1) + B1)</span><br><span class="line">        Hidden2_train = tf.nn.relu(tf.matmul(Hidden1_train, W2) + B2)</span><br><span class="line">        PRED_train = tf.nn.softmax(tf.matmul(Hidden2_train, W3) + B3)</span><br><span class="line">        Loss_train = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y_true=Y_train, y_pred=PRED_train))</span><br><span class="line">    Hidden1_test = tf.nn.relu(tf.matmul(X_test, W1) + B1)</span><br><span class="line">    Hidden2_test = tf.nn.relu(tf.matmul(Hidden1_test, W2) + B2)</span><br><span class="line">    PRED_test = tf.nn.softmax(tf.matmul(Hidden2_test, W3) + B3)</span><br><span class="line">    Loss_test = tf.reduce_mean(tf.keras.losses.categorical_crossentropy(y_true=Y_test, y_pred=PRED_test))</span><br><span class="line"></span><br><span class="line">    accuracy_train = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(PRED_train.numpy(), axis=<span class="number">1</span>), y_train), tf.float32))</span><br><span class="line">    accuracy_test = tf.reduce_mean(tf.cast(tf.equal(tf.argmax(PRED_test.numpy(), axis=<span class="number">1</span>), y_test), tf.float32))</span><br><span class="line">    acc_train.append(accuracy_train)</span><br><span class="line">    acc_test.append(accuracy_test)</span><br><span class="line">    cce_train.append(Loss_train)</span><br><span class="line">    cce_test.append(Loss_test)</span><br><span class="line"></span><br><span class="line">    grads = tape.gradient(Loss_train, [W1, B1, W2, B2, W3, B3])</span><br><span class="line">    W1.assign_sub(learn_rate * grads[<span class="number">0</span>])</span><br><span class="line">    B1.assign_sub(learn_rate * grads[<span class="number">1</span>])</span><br><span class="line">    W2.assign_sub(learn_rate * grads[<span class="number">2</span>])</span><br><span class="line">    B2.assign_sub(learn_rate * grads[<span class="number">3</span>])</span><br><span class="line">    W3.assign_sub(learn_rate * grads[<span class="number">4</span>])</span><br><span class="line">    B3.assign_sub(learn_rate * grads[<span class="number">5</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> i % display_step == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;i: %i, TrainAcc: %f, TrainLoss: %f, TestAcc: %f, TestLoss: %f&quot;</span> % (i, accuracy_train, Loss_train, accuracy_test, Loss_test))</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">20</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">121</span>)</span><br><span class="line">plt.plot(cce_train, color=<span class="string">&quot;blue&quot;</span>, label=<span class="string">&quot;train&quot;</span>)</span><br><span class="line">plt.plot(cce_test, color=<span class="string">&quot;red&quot;</span>, label=<span class="string">&quot;test&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;Iteration&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Loss&quot;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">122</span>)</span><br><span class="line">plt.plot(acc_train, color=<span class="string">&quot;blue&quot;</span>, label=<span class="string">&quot;train&quot;</span>)</span><br><span class="line">plt.plot(acc_test, color=<span class="string">&quot;red&quot;</span>, label=<span class="string">&quot;test&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;Iteration&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Accuracy&quot;</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line">plt.tight_layout()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<hr />
+<h4 id="实验结果">实验结果：</h4>
+<p><img data-src="/images/iris.png" /></p>
+<hr />
+<h4 id="实验总结">实验总结：</h4>
+<p>多元逻辑回归就是找到一条曲线（曲面）去划分多分类，整体相当于对于f=Wx
++
+B求得损失函数最小的参数，其中x和b是维度相同的一维向量，其大小代表了数据的维度。实验的主要工作在于应用tensorflow2.5的api构建函数以及对参数的求导（偏导），我们使用tf.matmul()构建函数，使用tf.GradientTape()进行自动求导，使用tensorflow的一大优势就在于我们不用关心损失函数复杂的链式求导过程，而可以将重心放在损失函数的设计以及其他参数的选择上。</p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>读书笔记</tag>
+        <tag>深度学习</tag>
+        <tag>Tensorflow</tag>
+        <tag>多元逻辑回归</tag>
       </tags>
   </entry>
 </search>
